@@ -8,7 +8,6 @@ import org.jetbrains.annotations.NotNull;
 
 import gregtech.GTInternalTags;
 
-import gregicality.GCYMInternalTags;
 import gregicality.multiblocks.api.fluids.GCYMMetaFluids;
 import gregicality.multiblocks.api.utils.GCYMLog;
 import gregicality.multiblocks.common.CommonProxy;

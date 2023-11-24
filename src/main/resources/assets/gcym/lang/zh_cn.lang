@@ -10,7 +10,7 @@ tile.unique_casing.molybdenum_disilicide_coil.name=二硅化钼线圈方块
 
 # large multiblock casing
 tile.large_multiblock_casing.macerator_casing.name=塞龙-100安全研磨机器外壳
-tile.large_multiblock_casing.blast_casing.name=耐高温HSLA钢机器外壳
+tile.large_multiblock_casing.blast_casing.name=耐高温冶炼级HSLA钢机器外壳
 tile.large_multiblock_casing.assembler_casing.name=司太立100精密组装机器外壳
 tile.large_multiblock_casing.stress_proof_casing.name=耐压马氏体时效钢300机器外壳
 tile.large_multiblock_casing.corrosion_proof_casing.name=耐腐蚀钴黄铜机器外壳
