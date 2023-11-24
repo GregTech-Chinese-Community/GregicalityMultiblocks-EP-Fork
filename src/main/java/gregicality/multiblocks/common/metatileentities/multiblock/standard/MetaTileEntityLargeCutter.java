@@ -3,6 +3,7 @@ package gregicality.multiblocks.common.metatileentities.multiblock.standard;
 import static gregtech.api.util.RelativeDirection.*;
 
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.client.resources.I18n;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.common.Loader;
 
@@ -27,6 +28,10 @@ import gregicality.multiblocks.common.block.GCYMMetaBlocks;
 import gregicality.multiblocks.common.block.blocks.BlockLargeMultiblockCasing;
 import gregicality.multiblocks.common.block.blocks.BlockUniqueCasing;
 
+import javax.annotation.Nonnull;
+import java.util.ArrayList;
+import java.util.List;
+
 public class MetaTileEntityLargeCutter extends GCYMRecipeMapMultiblockController {
 
     public MetaTileEntityLargeCutter(ResourceLocation metaTileEntityId) {
@@ -34,24 +39,28 @@ public class MetaTileEntityLargeCutter extends GCYMRecipeMapMultiblockController
     }
 
     @Override
-    public MetaTileEntity createMetaTileEntity(IGregTechTileEntity metaTileEntityHolder) {
+    public MetaTileEntity createMetaTileEntity(IGregTechTileEntity tileEntity) {
         return new MetaTileEntityLargeCutter(this.metaTileEntityId);
     }
 
+    @Nonnull
     @Override
-    protected @NotNull BlockPattern createStructurePattern() {
+    protected BlockPattern createStructurePattern() {
         return FactoryBlockPattern.start(FRONT, UP, RIGHT)
                 .aisle("XXXX", "XXXX", "XXXX", "####")
-                .aisle("XXXX", "STAX", "XXXX", "####")
+                .aisle("XXXX", "ST X", "XXXX", "####")
                 .aisle("XXXX", "XXXX", "XXXX", "XXXX")
-                .aisle("XXXX", "GCCX", "GAAX", "XXXX").setRepeatable(3)
+                .aisle("XXXX", "GCCX", "G  X", "XXXX").setRepeatable(3)
                 .aisle("XXXX", "XXXX", "XXXX", "XXXX")
-                .where('S', selfPredicate())
-                .where('X', states(getCasingState()).setMinGlobalLimited(65).or(autoAbilities()))
-                .where('G', states(getCasingState2()))
-                .where('C', states(getCasingState3()))
-                .where('T', tieredCasing().or(air()))
-                .where('A', air())
+                .where('S', this.selfPredicate())
+                .where('X', states(getCasingState())
+                        .setMinGlobalLimited(65)
+                        .or(autoAbilities()))
+                .where('G', states(getGlassState()))
+                .where('C', states(getUniqueCasingState()))
+                .where('T', tieredCasing()
+                        .or(air()))
+                .where(' ', air())
                 .where('#', any())
                 .build();
     }
@@ -60,11 +69,11 @@ public class MetaTileEntityLargeCutter extends GCYMRecipeMapMultiblockController
         return GCYMMetaBlocks.LARGE_MULTIBLOCK_CASING.getState(BlockLargeMultiblockCasing.CasingType.CUTTER_CASING);
     }
 
-    private static IBlockState getCasingState2() {
+    private static IBlockState getGlassState() {
         return MetaBlocks.TRANSPARENT_CASING.getState(BlockGlassCasing.CasingType.TEMPERED_GLASS);
     }
 
-    private static IBlockState getCasingState3() {
+    private static IBlockState getUniqueCasingState() {
         return GCYMMetaBlocks.UNIQUE_CASING.getState(BlockUniqueCasing.UniqueCasingType.SLICING_BLADES);
     }
 
@@ -73,9 +82,17 @@ public class MetaTileEntityLargeCutter extends GCYMRecipeMapMultiblockController
         return GCYMTextures.CUTTER_CASING;
     }
 
+    @Nonnull
     @Override
-    protected @NotNull OrientedOverlayRenderer getFrontOverlay() {
+    protected OrientedOverlayRenderer getFrontOverlay() {
         return GCYMTextures.LARGE_CUTTER_OVERLAY;
+    }
+
+    @Override
+    public String[] getDescription() {
+        List<String> list = new ArrayList<>();
+        list.add(I18n.format("gcym.machine.large_cutter.description"));
+        return list.toArray(new String[0]);
     }
 
     private static @NotNull RecipeMap<?> @NotNull [] determineRecipeMaps() {

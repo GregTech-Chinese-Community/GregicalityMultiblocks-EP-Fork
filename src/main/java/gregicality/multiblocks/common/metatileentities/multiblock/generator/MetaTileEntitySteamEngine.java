@@ -12,7 +12,6 @@ import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
 
-import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import gregtech.api.GTValues;
@@ -56,7 +55,7 @@ public class MetaTileEntitySteamEngine extends FuelMultiblockController {
                 .aisle("XXX", "XGX", "XMX")
                 .aisle("#XX", "XGX", "#XX")
                 .aisle("#XX", "#SX", "#XX")
-                .where('S', selfPredicate())
+                .where('S', this.selfPredicate())
                 .where('X', states(getCasingState())
                         .setMinGlobalLimited(18)
                         .or(autoAbilities(false, true, true, true, true, true, false)))
@@ -83,7 +82,7 @@ public class MetaTileEntitySteamEngine extends FuelMultiblockController {
     }
 
     @Override
-    public void addInformation(ItemStack stack, @Nullable World player, @NotNull List<String> tooltip, boolean advanced) {
+    public void addInformation(ItemStack stack, @Nullable World player, @Nonnull List<String> tooltip, boolean advanced) {
         super.addInformation(stack, player, tooltip, advanced);
         tooltip.add(I18n.format("gcym.machine.steam_engine.tooltip.1", GTValues.VNF[GTValues.MV]));
     }
@@ -100,8 +99,8 @@ public class MetaTileEntitySteamEngine extends FuelMultiblockController {
         return GCYMTextures.STEAM_CASING;
     }
 
+    @Nonnull
     @Override
-    @NotNull
     protected ICubeRenderer getFrontOverlay() {
         return GCYMTextures.STEAM_ENGINE_OVERLAY;
     }

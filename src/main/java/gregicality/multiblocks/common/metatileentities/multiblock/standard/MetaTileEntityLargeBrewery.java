@@ -1,9 +1,8 @@
 package gregicality.multiblocks.common.metatileentities.multiblock.standard;
 
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.client.resources.I18n;
 import net.minecraft.util.ResourceLocation;
-
-import org.jetbrains.annotations.NotNull;
 
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.interfaces.IGregTechTileEntity;
@@ -24,35 +23,43 @@ import gregicality.multiblocks.common.block.GCYMMetaBlocks;
 import gregicality.multiblocks.common.block.blocks.BlockLargeMultiblockCasing;
 import gregicality.multiblocks.common.block.blocks.BlockUniqueCasing;
 
+import javax.annotation.Nonnull;
+import java.util.ArrayList;
+import java.util.List;
+
 public class MetaTileEntityLargeBrewery extends GCYMRecipeMapMultiblockController {
 
     public MetaTileEntityLargeBrewery(ResourceLocation metaTileEntityId) {
-        super(metaTileEntityId, new RecipeMap[] { RecipeMaps.BREWING_RECIPES, RecipeMaps.FERMENTING_RECIPES,
+        super(metaTileEntityId, new RecipeMap[] {
+                RecipeMaps.BREWING_RECIPES,
+                RecipeMaps.FERMENTING_RECIPES,
                 RecipeMaps.FLUID_HEATER_RECIPES });
     }
 
     @Override
-    public MetaTileEntity createMetaTileEntity(IGregTechTileEntity metaTileEntityHolder) {
+    public MetaTileEntity createMetaTileEntity(IGregTechTileEntity tileEntity) {
         return new MetaTileEntityLargeBrewery(this.metaTileEntityId);
     }
 
+    @Nonnull
     @Override
-    protected @NotNull BlockPattern createStructurePattern() {
+    protected BlockPattern createStructurePattern() {
         return FactoryBlockPattern.start()
                 .aisle("#XXX#", "#XXX#", "#XXX#", "#XXX#", "#####")
-                .aisle("XXXXX", "XCCCX", "XAAAX", "XXAXX", "##X##")
-                .aisle("XXXXX", "XCPCX", "XATAX", "XAPAX", "#XMX#")
-                .aisle("XXXXX", "XCCCX", "XAAAX", "XXAXX", "##X##")
+                .aisle("XXXXX", "XCCCX", "X   X", "XX XX", "##X##")
+                .aisle("XXXXX", "XCPCX", "X T X", "X P X", "#XMX#")
+                .aisle("XXXXX", "XCCCX", "X   X", "XX XX", "##X##")
                 .aisle("#XXX#", "#XSX#", "#XXX#", "#XXX#", "#####")
-                .where('S', selfPredicate())
-                .where('X',
-                        states(getCasingState()).setMinGlobalLimited(50)
-                                .or(autoAbilities(true, true, true, true, true, true, false)))
-                .where('C', states(getCasingState2()))
-                .where('P', states(getCasingState3()))
+                .where('S', this.selfPredicate())
+                .where('X', states(getCasingState())
+                        .setMinGlobalLimited(50)
+                        .or(autoAbilities(true, true, true, true, true, true, false)))
+                .where('C', states(getUniqueCasingState()))
+                .where('P', states(getBoilerCasingState()))
                 .where('M', abilities(MultiblockAbility.MUFFLER_HATCH))
-                .where('T', tieredCasing().or(states(getCasingState3())))
-                .where('A', air())
+                .where('T', tieredCasing()
+                        .or(states(getBoilerCasingState())))
+                .where(' ', air())
                 .where('#', any())
                 .build();
     }
@@ -62,11 +69,11 @@ public class MetaTileEntityLargeBrewery extends GCYMRecipeMapMultiblockControlle
                 .getState(BlockLargeMultiblockCasing.CasingType.CORROSION_PROOF_CASING);
     }
 
-    private static IBlockState getCasingState2() {
+    private static IBlockState getUniqueCasingState() {
         return GCYMMetaBlocks.UNIQUE_CASING.getState(BlockUniqueCasing.UniqueCasingType.MOLYBDENUM_DISILICIDE_COIL);
     }
 
-    private static IBlockState getCasingState3() {
+    private static IBlockState getBoilerCasingState() {
         return MetaBlocks.BOILER_CASING.getState(BlockBoilerCasing.BoilerCasingType.STEEL_PIPE);
     }
 
@@ -75,9 +82,17 @@ public class MetaTileEntityLargeBrewery extends GCYMRecipeMapMultiblockControlle
         return GCYMTextures.CORROSION_PROOF_CASING;
     }
 
+    @Nonnull
     @Override
-    protected @NotNull OrientedOverlayRenderer getFrontOverlay() {
+    protected OrientedOverlayRenderer getFrontOverlay() {
         return GCYMTextures.LARGE_BREWERY_OVERLAY;
+    }
+
+    @Override
+    public String[] getDescription() {
+        List<String> list = new ArrayList<>();
+        list.add(I18n.format("gcym.machine.large_brewer.description"));
+        return list.toArray(new String[0]);
     }
 
     @Override

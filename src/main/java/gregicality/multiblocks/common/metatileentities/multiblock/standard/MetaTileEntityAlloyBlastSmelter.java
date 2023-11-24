@@ -16,7 +16,6 @@ import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.World;
 
-import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import gregtech.api.GTValues;
@@ -49,6 +48,8 @@ import gregicality.multiblocks.common.block.blocks.BlockLargeMultiblockCasing;
 import gregicality.multiblocks.common.block.blocks.BlockUniqueCasing;
 import gregicality.multiblocks.common.metatileentities.GCYMMetaTileEntities;
 
+import javax.annotation.Nonnull;
+
 public class MetaTileEntityAlloyBlastSmelter extends RecipeMapMultiblockController implements IHeatingCoil {
 
     private int blastFurnaceTemperature;
@@ -59,7 +60,7 @@ public class MetaTileEntityAlloyBlastSmelter extends RecipeMapMultiblockControll
     }
 
     @Override
-    public MetaTileEntity createMetaTileEntity(IGregTechTileEntity metaTileEntityHolder) {
+    public MetaTileEntity createMetaTileEntity(IGregTechTileEntity tileEntity) {
         return new MetaTileEntityAlloyBlastSmelter(this.metaTileEntityId);
     }
 
@@ -94,26 +95,27 @@ public class MetaTileEntityAlloyBlastSmelter extends RecipeMapMultiblockControll
     }
 
     @Override
-    public boolean checkRecipe(@NotNull Recipe recipe, boolean consumeIfSuccess) {
+    public boolean checkRecipe(@Nonnull Recipe recipe, boolean consumeIfSuccess) {
         return this.blastFurnaceTemperature >= recipe.getProperty(TemperatureProperty.getInstance(), 0);
     }
 
+    @Nonnull
     @Override
-    protected @NotNull BlockPattern createStructurePattern() {
+    protected BlockPattern createStructurePattern() {
         return FactoryBlockPattern.start()
                 .aisle("#XXX#", "#CCC#", "#GGG#", "#CCC#", "#XXX#")
-                .aisle("XXXXX", "CAAAC", "GAAAG", "CAAAC", "XXXXX")
-                .aisle("XXXXX", "CAAAC", "GAAAG", "CAAAC", "XXMXX")
-                .aisle("XXXXX", "CAAAC", "GAAAG", "CAAAC", "XXXXX")
+                .aisle("XXXXX", "C   C", "G   G", "C   C", "XXXXX")
+                .aisle("XXXXX", "C   C", "G   G", "C   C", "XXMXX")
+                .aisle("XXXXX", "C   C", "G   G", "C   C", "XXXXX")
                 .aisle("#XSX#", "#CCC#", "#GGG#", "#CCC#", "#XXX#")
-                .where('S', selfPredicate())
-                .where('X',
-                        states(getCasingState()).setMinGlobalLimited(30)
-                                .or(autoAbilities(true, true, true, true, true, true, false)))
+                .where('S', this.selfPredicate())
+                .where('X', states(getCasingState())
+                        .setMinGlobalLimited(30)
+                        .or(autoAbilities(true, true, true, true, true, true, false)))
                 .where('C', heatingCoils())
-                .where('G', states(getCasingState2()))
+                .where('G', states(getUniqueCasingState()))
                 .where('M', abilities(MultiblockAbility.MUFFLER_HATCH))
-                .where('A', air())
+                .where(' ', air())
                 .where('#', any())
                 .build();
     }
@@ -129,7 +131,7 @@ public class MetaTileEntityAlloyBlastSmelter extends RecipeMapMultiblockControll
                 .aisle("#ISO#", "#CCC#", "#GGG#", "#CCC#", "#XXX#")
                 .where('S', GCYMMetaTileEntities.ALLOY_BLAST_SMELTER, EnumFacing.SOUTH)
                 .where('X', getCasingState())
-                .where('G', getCasingState2())
+                .where('G', getUniqueCasingState())
                 .where('M', MetaTileEntities.MUFFLER_HATCH[GTValues.HV], EnumFacing.UP)
                 .where('I', MetaTileEntities.ITEM_IMPORT_BUS[GTValues.HV], EnumFacing.SOUTH)
                 .where('F', MetaTileEntities.FLUID_IMPORT_HATCH[GTValues.HV], EnumFacing.SOUTH)
@@ -152,13 +154,12 @@ public class MetaTileEntityAlloyBlastSmelter extends RecipeMapMultiblockControll
                 .getState(BlockLargeMultiblockCasing.CasingType.HIGH_TEMPERATURE_CASING);
     }
 
-    private static IBlockState getCasingState2() {
+    private static IBlockState getUniqueCasingState() {
         return GCYMMetaBlocks.UNIQUE_CASING.getState(BlockUniqueCasing.UniqueCasingType.HEAT_VENT);
     }
 
     @Override
-    public void addInformation(ItemStack stack, @Nullable World player, @NotNull List<String> tooltip,
-                               boolean advanced) {
+    public void addInformation(ItemStack stack, @Nullable World player, @Nonnull List<String> tooltip, boolean advanced) {
         super.addInformation(stack, player, tooltip, advanced);
         tooltip.add(I18n.format("gregtech.machine.electric_blast_furnace.tooltip.1"));
         tooltip.add(I18n.format("gregtech.machine.electric_blast_furnace.tooltip.2"));
@@ -166,12 +167,20 @@ public class MetaTileEntityAlloyBlastSmelter extends RecipeMapMultiblockControll
     }
 
     @Override
+    public String[] getDescription() {
+        List<String> list = new ArrayList<>();
+        list.add(I18n.format("gcym.machine.alloy_blast_smelter.description"));
+        return list.toArray(new String[0]);
+    }
+
+    @Override
     public ICubeRenderer getBaseTexture(IMultiblockPart iMultiblockPart) {
         return GCYMTextures.BLAST_CASING;
     }
 
+    @Nonnull
     @Override
-    protected @NotNull OrientedOverlayRenderer getFrontOverlay() {
+    protected OrientedOverlayRenderer getFrontOverlay() {
         return GCYMTextures.ALLOY_BLAST_SMELTER_OVERLAY;
     }
 

@@ -1,9 +1,8 @@
 package gregicality.multiblocks.common.metatileentities.multiblock.standard;
 
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.client.resources.I18n;
 import net.minecraft.util.ResourceLocation;
-
-import org.jetbrains.annotations.NotNull;
 
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.interfaces.IGregTechTileEntity;
@@ -21,6 +20,10 @@ import gregicality.multiblocks.common.block.GCYMMetaBlocks;
 import gregicality.multiblocks.common.block.blocks.BlockLargeMultiblockCasing;
 import gregicality.multiblocks.common.block.blocks.BlockUniqueCasing;
 
+import javax.annotation.Nonnull;
+import java.util.ArrayList;
+import java.util.List;
+
 public class MetaTileEntityLargeArcFurnace extends GCYMRecipeMapMultiblockController {
 
     public MetaTileEntityLargeArcFurnace(ResourceLocation metaTileEntityId) {
@@ -28,35 +31,37 @@ public class MetaTileEntityLargeArcFurnace extends GCYMRecipeMapMultiblockContro
     }
 
     @Override
-    public MetaTileEntity createMetaTileEntity(IGregTechTileEntity metaTileEntityHolder) {
+    public MetaTileEntity createMetaTileEntity(IGregTechTileEntity tileEntity) {
         return new MetaTileEntityLargeArcFurnace(this.metaTileEntityId);
     }
 
+    @Nonnull
     @Override
-    protected @NotNull BlockPattern createStructurePattern() {
+    protected BlockPattern createStructurePattern() {
         return FactoryBlockPattern.start()
                 .aisle("#XXX#", "#XXX#", "#XXX#", "#XXX#")
-                .aisle("XXXXX", "XCACX", "XCACX", "XXXXX")
-                .aisle("XXXXX", "XATAX", "XAAAX", "XXMXX")
-                .aisle("XXXXX", "XACAX", "XACAX", "XXXXX")
+                .aisle("XXXXX", "XC CX", "XC CX", "XXXXX")
+                .aisle("XXXXX", "X T X", "X   X", "XXMXX")
+                .aisle("XXXXX", "X C X", "X C X", "XXXXX")
                 .aisle("#XXX#", "#XSX#", "#XXX#", "#XXX#")
-                .where('S', selfPredicate())
-                .where('X', states(getCasingState()).setMinGlobalLimited(45)
+                .where('S', this.selfPredicate())
+                .where('X', states(getCasingState())
+                        .setMinGlobalLimited(45)
                         .or(autoAbilities(true, true, true, true, true, true, false)))
-                .where('C', states(getCasingState2()))
+                .where('C', states(getUniqueCasingState()))
                 .where('M', abilities(MultiblockAbility.MUFFLER_HATCH))
-                .where('T', tieredCasing().or(air()))
-                .where('A', air())
+                .where('T', tieredCasing()
+                        .or(air()))
+                .where(' ', air())
                 .where('#', any())
                 .build();
     }
 
     private static IBlockState getCasingState() {
-        return GCYMMetaBlocks.LARGE_MULTIBLOCK_CASING
-                .getState(BlockLargeMultiblockCasing.CasingType.HIGH_TEMPERATURE_CASING);
+        return GCYMMetaBlocks.LARGE_MULTIBLOCK_CASING.getState(BlockLargeMultiblockCasing.CasingType.HIGH_TEMPERATURE_CASING);
     }
 
-    private static IBlockState getCasingState2() {
+    private static IBlockState getUniqueCasingState() {
         return GCYMMetaBlocks.UNIQUE_CASING.getState(BlockUniqueCasing.UniqueCasingType.MOLYBDENUM_DISILICIDE_COIL);
     }
 
@@ -65,9 +70,17 @@ public class MetaTileEntityLargeArcFurnace extends GCYMRecipeMapMultiblockContro
         return GCYMTextures.BLAST_CASING;
     }
 
+    @Nonnull
     @Override
-    protected @NotNull OrientedOverlayRenderer getFrontOverlay() {
+    protected OrientedOverlayRenderer getFrontOverlay() {
         return GCYMTextures.LARGE_ARC_FURNACE_OVERLAY;
+    }
+
+    @Override
+    public String[] getDescription() {
+        List<String> list = new ArrayList<>();
+        list.add(I18n.format("gcym.machine.large_arc_furnace.description"));
+        return list.toArray(new String[0]);
     }
 
     @Override

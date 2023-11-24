@@ -3,6 +3,7 @@ package gregicality.multiblocks.common.metatileentities.multiblock.standard;
 import static gregtech.api.util.RelativeDirection.*;
 
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.client.resources.I18n;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.common.Loader;
 
@@ -26,6 +27,10 @@ import gregicality.multiblocks.api.render.GCYMTextures;
 import gregicality.multiblocks.common.block.GCYMMetaBlocks;
 import gregicality.multiblocks.common.block.blocks.BlockLargeMultiblockCasing;
 
+import javax.annotation.Nonnull;
+import java.util.ArrayList;
+import java.util.List;
+
 public class MetaTileEntityLargeSifter extends GCYMRecipeMapMultiblockController {
 
     public MetaTileEntityLargeSifter(ResourceLocation metaTileEntityId) {
@@ -33,24 +38,28 @@ public class MetaTileEntityLargeSifter extends GCYMRecipeMapMultiblockController
     }
 
     @Override
-    public MetaTileEntity createMetaTileEntity(IGregTechTileEntity metaTileEntityHolder) {
+    public MetaTileEntity createMetaTileEntity(IGregTechTileEntity tileEntity) {
         return new MetaTileEntityLargeSifter(this.metaTileEntityId);
     }
 
+    @Nonnull
     @Override
-    protected @NotNull BlockPattern createStructurePattern() {
+    protected BlockPattern createStructurePattern() {
         return FactoryBlockPattern.start(RIGHT, FRONT, UP)
-                .aisle("#X#X#", "XXXXX", "#XXX#", "XXXXX", "#X#X#")
-                .aisle("#X#X#", "XAXAX", "#XTX#", "XAXAX", "#X#X#")
-                .aisle("#XXX#", "XCCCX", "XCCCX", "XCCCX", "#XXX#")
-                .aisle("#XSX#", "XCCCX", "XCCCX", "XCCCX", "#XXX#")
-                .aisle("#XXX#", "X###X", "X###X", "X###X", "#XXX#")
-                .where('S', selfPredicate())
-                .where('X', states(getCasingState()).setMinGlobalLimited(50).or(autoAbilities()))
-                .where('C', states(getCasingState2()))
-                .where('T', tieredCasing().or(air()))
+                .aisle(" X X ", "XXXXX", " XXX ", "XXXXX", " X X ")
+                .aisle(" X X ", "XAXAX", " XTX ", "XAXAX", " X X ")
+                .aisle(" XXX ", "XCCCX", "XCCCX", "XCCCX", " XXX ")
+                .aisle(" XSX ", "XCCCX", "XCCCX", "XCCCX", " XXX ")
+                .aisle(" XXX ", "X   X", "X   X", "X   X", " XXX ")
+                .where('S', this.selfPredicate())
+                .where('X', states(getCasingState())
+                        .setMinGlobalLimited(50)
+                        .or(autoAbilities()))
+                .where('C', states(getSecondCasingState()))
+                .where('T', tieredCasing()
+                        .or(air()))
                 .where('A', air())
-                .where('#', any())
+                .where(' ', any())
                 .build();
     }
 
@@ -59,7 +68,7 @@ public class MetaTileEntityLargeSifter extends GCYMRecipeMapMultiblockController
                 .getState(BlockLargeMultiblockCasing.CasingType.VIBRATION_SAFE_CASING);
     }
 
-    private static IBlockState getCasingState2() {
+    private static IBlockState getSecondCasingState() {
         return MetaBlocks.MULTIBLOCK_CASING.getState(BlockMultiblockCasing.MultiblockCasingType.GRATE_CASING);
     }
 
@@ -68,8 +77,9 @@ public class MetaTileEntityLargeSifter extends GCYMRecipeMapMultiblockController
         return GCYMTextures.VIBRATION_SAFE_CASING;
     }
 
+    @Nonnull
     @Override
-    protected @NotNull OrientedOverlayRenderer getFrontOverlay() {
+    protected OrientedOverlayRenderer getFrontOverlay() {
         return GCYMTextures.LARGE_SIFTER_OVERLAY;
     }
 
@@ -79,5 +89,12 @@ public class MetaTileEntityLargeSifter extends GCYMRecipeMapMultiblockController
             return new RecipeMap<?>[] { RecipeMaps.SIFTER_RECIPES, sieveMap };
         }
         return new RecipeMap<?>[] { RecipeMaps.SIFTER_RECIPES };
+    }
+
+    @Override
+    public String[] getDescription() {
+        List<String> list = new ArrayList<>();
+        list.add(I18n.format("gcym.machine.large_sifter.description"));
+        return list.toArray(new String[0]);
     }
 }

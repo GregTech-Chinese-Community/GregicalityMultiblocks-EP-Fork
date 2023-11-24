@@ -1,9 +1,8 @@
 package gregicality.multiblocks.common.metatileentities.multiblock.standard;
 
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.client.resources.I18n;
 import net.minecraft.util.ResourceLocation;
-
-import org.jetbrains.annotations.NotNull;
 
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.interfaces.IGregTechTileEntity;
@@ -20,6 +19,10 @@ import gregicality.multiblocks.common.block.GCYMMetaBlocks;
 import gregicality.multiblocks.common.block.blocks.BlockLargeMultiblockCasing;
 import gregicality.multiblocks.common.block.blocks.BlockUniqueCasing;
 
+import javax.annotation.Nonnull;
+import java.util.ArrayList;
+import java.util.List;
+
 public class MetaTileEntityLargeMacerator extends GCYMRecipeMapMultiblockController {
 
     public MetaTileEntityLargeMacerator(ResourceLocation metaTileEntityId) {
@@ -27,23 +30,27 @@ public class MetaTileEntityLargeMacerator extends GCYMRecipeMapMultiblockControl
     }
 
     @Override
-    public MetaTileEntity createMetaTileEntity(IGregTechTileEntity metaTileEntityHolder) {
+    public MetaTileEntity createMetaTileEntity(IGregTechTileEntity tileEntity) {
         return new MetaTileEntityLargeMacerator(this.metaTileEntityId);
     }
 
+    @Nonnull
     @Override
-    protected @NotNull BlockPattern createStructurePattern() {
+    protected BlockPattern createStructurePattern() {
         return FactoryBlockPattern.start()
                 .aisle("XXXXX", "XXXXX", "XXXXX", "XXXXX")
-                .aisle("XXXXX", "XCCCX", "XCCCX", "X###X")
-                .aisle("XXXXX", "XCTCX", "XCCCX", "X###X")
-                .aisle("XXXXX", "XCCCX", "XCCCX", "X###X")
+                .aisle("XXXXX", "XCCCX", "XCCCX", "X   X")
+                .aisle("XXXXX", "XCTCX", "XCCCX", "X   X")
+                .aisle("XXXXX", "XCCCX", "XCCCX", "X   X")
                 .aisle("XXXXX", "XXSXX", "XXXXX", "XXXXX")
-                .where('S', selfPredicate())
-                .where('X', states(getCasingState()).setMinGlobalLimited(55).or(autoAbilities()))
-                .where('C', states(getCasingState2()))
-                .where('T', tieredCasing().or(states(getCasingState2())))
-                .where('#', air())
+                .where('S', this.selfPredicate())
+                .where('X', states(getCasingState())
+                        .setMinGlobalLimited(55)
+                        .or(autoAbilities()))
+                .where('C', states(getUniqueCasingState()))
+                .where('T', tieredCasing()
+                        .or(states(getUniqueCasingState())))
+                .where(' ', air())
                 .build();
     }
 
@@ -51,7 +58,7 @@ public class MetaTileEntityLargeMacerator extends GCYMRecipeMapMultiblockControl
         return GCYMMetaBlocks.LARGE_MULTIBLOCK_CASING.getState(BlockLargeMultiblockCasing.CasingType.MACERATOR_CASING);
     }
 
-    private static IBlockState getCasingState2() {
+    private static IBlockState getUniqueCasingState() {
         return GCYMMetaBlocks.UNIQUE_CASING.getState(BlockUniqueCasing.UniqueCasingType.CRUSHING_WHEELS);
     }
 
@@ -60,8 +67,16 @@ public class MetaTileEntityLargeMacerator extends GCYMRecipeMapMultiblockControl
         return GCYMTextures.MACERATOR_CASING;
     }
 
+    @Nonnull
     @Override
-    protected @NotNull OrientedOverlayRenderer getFrontOverlay() {
+    protected OrientedOverlayRenderer getFrontOverlay() {
         return GCYMTextures.LARGE_MACERATOR_OVERLAY;
+    }
+
+    @Override
+    public String[] getDescription() {
+        List<String> list = new ArrayList<>();
+        list.add(I18n.format("gcym.machine.large_macerator.description"));
+        return list.toArray(new String[0]);
     }
 }

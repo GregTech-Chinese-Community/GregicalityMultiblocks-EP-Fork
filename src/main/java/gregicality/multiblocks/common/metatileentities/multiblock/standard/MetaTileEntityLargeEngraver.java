@@ -1,9 +1,8 @@
 package gregicality.multiblocks.common.metatileentities.multiblock.standard;
 
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.client.resources.I18n;
 import net.minecraft.util.ResourceLocation;
-
-import org.jetbrains.annotations.NotNull;
 
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.interfaces.IGregTechTileEntity;
@@ -23,6 +22,10 @@ import gregicality.multiblocks.api.render.GCYMTextures;
 import gregicality.multiblocks.common.block.GCYMMetaBlocks;
 import gregicality.multiblocks.common.block.blocks.BlockLargeMultiblockCasing;
 
+import javax.annotation.Nonnull;
+import java.util.ArrayList;
+import java.util.List;
+
 public class MetaTileEntityLargeEngraver extends GCYMRecipeMapMultiblockController {
 
     public MetaTileEntityLargeEngraver(ResourceLocation metaTileEntityId) {
@@ -30,26 +33,29 @@ public class MetaTileEntityLargeEngraver extends GCYMRecipeMapMultiblockControll
     }
 
     @Override
-    public MetaTileEntity createMetaTileEntity(IGregTechTileEntity metaTileEntityHolder) {
+    public MetaTileEntity createMetaTileEntity(IGregTechTileEntity tileEntity) {
         return new MetaTileEntityLargeEngraver(this.metaTileEntityId);
     }
 
+    @Nonnull
     @Override
-    protected @NotNull BlockPattern createStructurePattern() {
+    protected BlockPattern createStructurePattern() {
         return FactoryBlockPattern.start()
                 .aisle("XXXXX", "XXGXX", "XXGXX", "XXXXX")
-                .aisle("XXXXX", "XAAAX", "XAAAX", "XCCCX")
-                .aisle("XXXXX", "GATAG", "GAPAG", "XCXCX")
-                .aisle("XXXXX", "XAAAX", "XAAAX", "XCCCX")
+                .aisle("XXXXX", "X   X", "X   X", "XCCCX")
+                .aisle("XXXXX", "G T G", "G P G", "XCXCX")
+                .aisle("XXXXX", "X   X", "X   X", "XCCCX")
                 .aisle("XXSXX", "XXGXX", "XXGXX", "XXXXX")
                 .where('S', selfPredicate())
-                .where('X', states(getCasingState()).setMinGlobalLimited(50)
+                .where('X', states(getCasingState())
+                        .setMinGlobalLimited(50)
                         .or(autoAbilities(true, true, true, true, true, true, false)))
-                .where('P', states(getCasingState2()))
-                .where('G', states(getCasingState3()))
-                .where('C', states(getCasingState4()))
-                .where('T', tieredCasing().or(air()))
-                .where('A', air())
+                .where('P', states(getBoilerCasingState()))
+                .where('G', states(getGlassState()))
+                .where('C', states(getSecondCasingState()))
+                .where('T', tieredCasing()
+                        .or(air()))
+                .where(' ', air())
                 .build();
     }
 
@@ -57,15 +63,15 @@ public class MetaTileEntityLargeEngraver extends GCYMRecipeMapMultiblockControll
         return GCYMMetaBlocks.LARGE_MULTIBLOCK_CASING.getState(BlockLargeMultiblockCasing.CasingType.ENGRAVER_CASING);
     }
 
-    private static IBlockState getCasingState2() {
+    private static IBlockState getBoilerCasingState() {
         return MetaBlocks.BOILER_CASING.getState(BlockBoilerCasing.BoilerCasingType.TUNGSTENSTEEL_PIPE);
     }
 
-    private static IBlockState getCasingState3() {
+    private static IBlockState getGlassState() {
         return MetaBlocks.TRANSPARENT_CASING.getState(BlockGlassCasing.CasingType.TEMPERED_GLASS);
     }
 
-    private static IBlockState getCasingState4() {
+    private static IBlockState getSecondCasingState() {
         return MetaBlocks.MULTIBLOCK_CASING.getState(BlockMultiblockCasing.MultiblockCasingType.GRATE_CASING);
     }
 
@@ -74,9 +80,17 @@ public class MetaTileEntityLargeEngraver extends GCYMRecipeMapMultiblockControll
         return GCYMTextures.ENGRAVER_CASING;
     }
 
+    @Nonnull
     @Override
-    protected @NotNull OrientedOverlayRenderer getFrontOverlay() {
+    protected OrientedOverlayRenderer getFrontOverlay() {
         return GCYMTextures.LARGE_ENGRAVER_OVERLAY;
+    }
+
+    @Override
+    public String[] getDescription() {
+        List<String> list = new ArrayList<>();
+        list.add(I18n.format("gcym.machine.large_engraver.description"));
+        return list.toArray(new String[0]);
     }
 
     @Override

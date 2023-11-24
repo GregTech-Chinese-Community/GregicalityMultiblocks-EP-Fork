@@ -1,9 +1,8 @@
 package gregicality.multiblocks.common.metatileentities.multiblock.standard;
 
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.client.resources.I18n;
 import net.minecraft.util.ResourceLocation;
-
-import org.jetbrains.annotations.NotNull;
 
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.interfaces.IGregTechTileEntity;
@@ -23,6 +22,10 @@ import gregicality.multiblocks.common.block.GCYMMetaBlocks;
 import gregicality.multiblocks.common.block.blocks.BlockLargeMultiblockCasing;
 import gregicality.multiblocks.common.block.blocks.BlockUniqueCasing;
 
+import javax.annotation.Nonnull;
+import java.util.ArrayList;
+import java.util.List;
+
 public class MetaTileEntityLargeMassFabricator extends GCYMRecipeMapMultiblockController {
 
     public MetaTileEntityLargeMassFabricator(ResourceLocation metaTileEntityId) {
@@ -30,24 +33,27 @@ public class MetaTileEntityLargeMassFabricator extends GCYMRecipeMapMultiblockCo
     }
 
     @Override
-    public MetaTileEntity createMetaTileEntity(IGregTechTileEntity metaTileEntityHolder) {
+    public MetaTileEntity createMetaTileEntity(IGregTechTileEntity tileEntity) {
         return new MetaTileEntityLargeMassFabricator(this.metaTileEntityId);
     }
 
+    @Nonnull
     @Override
-    protected @NotNull BlockPattern createStructurePattern() {
+    protected BlockPattern createStructurePattern() {
         return FactoryBlockPattern.start()
                 .aisle("XXXXX", "XGGGX", "XGVGX", "XGGGX", "XXXXX")
-                .aisle("XXXXX", "GAAAG", "GAKAG", "GAAAG", "XXXXX")
-                .aisle("XXVXX", "GAKAG", "VKKKV", "GAKAG", "XXVXX")
-                .aisle("XXXXX", "GAAAG", "GAKAG", "GAAAG", "XXXXX")
+                .aisle("XXXXX", "G   G", "G K G", "G   G", "XXXXX")
+                .aisle("XXVXX", "G K G", "VKKKV", "G K G", "XXVXX")
+                .aisle("XXXXX", "G   G", "G K G", "G   G", "XXXXX")
                 .aisle("XXXXX", "XGGGX", "XGSGX", "XGGGX", "XXXXX")
-                .where('S', selfPredicate())
-                .where('X', states(getCasingState()).setMinGlobalLimited(45).or(autoAbilities()))
-                .where('G', states(getCasingState2()))
-                .where('V', states(getCasingState3()))
-                .where('K', states(getCasingState4()))
-                .where('A', air())
+                .where('S', this.selfPredicate())
+                .where('X', states(getCasingState())
+                        .setMinGlobalLimited(45)
+                        .or(autoAbilities()))
+                .where('G', states(getGlassState()))
+                .where('V', states(getUniqueCasingState()))
+                .where('K', states(getCoilState()))
+                .where(' ', air())
                 .where('#', any())
                 .build();
     }
@@ -56,15 +62,15 @@ public class MetaTileEntityLargeMassFabricator extends GCYMRecipeMapMultiblockCo
         return GCYMMetaBlocks.LARGE_MULTIBLOCK_CASING.getState(BlockLargeMultiblockCasing.CasingType.ATOMIC_CASING);
     }
 
-    private static IBlockState getCasingState2() {
+    private static IBlockState getGlassState() {
         return MetaBlocks.TRANSPARENT_CASING.getState(BlockGlassCasing.CasingType.FUSION_GLASS);
     }
 
-    private static IBlockState getCasingState3() {
+    private static IBlockState getUniqueCasingState() {
         return GCYMMetaBlocks.UNIQUE_CASING.getState(BlockUniqueCasing.UniqueCasingType.HEAT_VENT);
     }
 
-    private static IBlockState getCasingState4() {
+    private static IBlockState getCoilState() {
         return MetaBlocks.FUSION_CASING.getState(BlockFusionCasing.CasingType.FUSION_COIL);
     }
 
@@ -73,8 +79,16 @@ public class MetaTileEntityLargeMassFabricator extends GCYMRecipeMapMultiblockCo
         return GCYMTextures.ATOMIC_CASING;
     }
 
+    @Nonnull
     @Override
-    protected @NotNull OrientedOverlayRenderer getFrontOverlay() {
+    protected OrientedOverlayRenderer getFrontOverlay() {
         return GCYMTextures.LARGE_MASS_FABRICATOR_OVERLAY;
+    }
+
+    @Override
+    public String[] getDescription() {
+        List<String> list = new ArrayList<>();
+        list.add(I18n.format("gcym.machine.large_mass_fabricator.description"));
+        return list.toArray(new String[0]);
     }
 }

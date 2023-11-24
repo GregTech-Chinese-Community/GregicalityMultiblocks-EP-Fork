@@ -2,17 +2,17 @@ package gregicality.multiblocks.common.metatileentities.multiblock.standard;
 
 import static gregtech.api.util.RelativeDirection.*;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Function;
 
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.client.resources.I18n;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraftforge.fluids.FluidStack;
-
-import org.jetbrains.annotations.NotNull;
 
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.interfaces.IGregTechTileEntity;
@@ -36,53 +36,61 @@ import gregicality.multiblocks.api.render.GCYMTextures;
 import gregicality.multiblocks.common.block.GCYMMetaBlocks;
 import gregicality.multiblocks.common.block.blocks.BlockLargeMultiblockCasing;
 
-public class MetaTileEntityLargeDistillery extends GCYMRecipeMapMultiblockController { // todo structure needs fixing
+import javax.annotation.Nonnull;
+
+//  TODO Structure needs fixing (automatic building error)
+public class MetaTileEntityLargeDistillery extends GCYMRecipeMapMultiblockController {
 
     public MetaTileEntityLargeDistillery(ResourceLocation metaTileEntityId) {
-        super(metaTileEntityId, new RecipeMap[] { RecipeMaps.DISTILLATION_RECIPES, RecipeMaps.DISTILLERY_RECIPES });
+        super(metaTileEntityId, new RecipeMap[] {
+                RecipeMaps.DISTILLATION_RECIPES,
+                RecipeMaps.DISTILLERY_RECIPES });
     }
 
     @Override
-    public MetaTileEntity createMetaTileEntity(IGregTechTileEntity metaTileEntityHolder) {
+    public MetaTileEntity createMetaTileEntity(IGregTechTileEntity tileEntity) {
         return new MetaTileEntityLargeDistillery(this.metaTileEntityId);
     }
 
     @Override
     protected Function<BlockPos, Integer> multiblockPartSorter() {
-        return BlockPos::getY; // todo this needs to be "relative up" with Freedom Wrench
+        return BlockPos::getY;
     }
 
+    @Nonnull
     @Override
-    protected @NotNull BlockPattern createStructurePattern() {
-        TraceabilityPredicate casingPredicate = states(getCasingState()).setMinGlobalLimited(40); // Different
-                                                                                                  // characters use
-                                                                                                  // common constraints
-        TraceabilityPredicate maintenancePredicate = this.hasMaintenanceMechanics() &&
-                ConfigHolder.machines.enableMaintenance ?
-                        abilities(MultiblockAbility.MAINTENANCE_HATCH).setMinGlobalLimited(1).setMaxGlobalLimited(1) :
-                        casingPredicate;
+    protected BlockPattern createStructurePattern() {
+        TraceabilityPredicate casingPredicate = states(getCasingState()).setMinGlobalLimited(40);
+        TraceabilityPredicate maintenancePredicate = this.hasMaintenanceMechanics() && ConfigHolder.machines.enableMaintenance ? abilities(MultiblockAbility.MAINTENANCE_HATCH).setMinGlobalLimited(1).setMaxGlobalLimited(1) : casingPredicate;
         return FactoryBlockPattern.start(RIGHT, FRONT, DOWN)
                 .aisle("#####", "#ZZZ#", "#ZCZ#", "#ZZZ#", "#####")
-                .aisle("##X##", "#XAX#", "XAPAX", "#XAX#", "##X##").setRepeatable(1, 12)
-                .aisle("#YSY#", "YAAAY", "YATAY", "YAAAY", "#YYY#")
+                .aisle("##X##", "#X X#", "X P X", "#X X#", "##X##").setRepeatable(1, 12)
+                .aisle("#YSY#", "Y   Y", "Y T Y", "Y   Y", "#YYY#")
                 .aisle("#YYY#", "YYYYY", "YYYYY", "YYYYY", "#YYY#")
-                .where('S', selfPredicate())
-                .where('Y', casingPredicate.or(abilities(MultiblockAbility.IMPORT_ITEMS))
-                        .or(abilities(MultiblockAbility.INPUT_ENERGY).setMinGlobalLimited(1))
-                        .or(abilities(MultiblockAbility.IMPORT_FLUIDS).setMinGlobalLimited(1))
+                .where('S', this.selfPredicate())
+                .where('Y', casingPredicate
+                        .or(abilities(MultiblockAbility.IMPORT_ITEMS))
+                        .or(abilities(MultiblockAbility.INPUT_ENERGY)
+                                .setMinGlobalLimited(1))
+                        .or(abilities(MultiblockAbility.IMPORT_FLUIDS)
+                                .setMinGlobalLimited(1))
                         .or(abilities(MultiblockAbility.EXPORT_ITEMS))
-                        .or(abilities(GCYMMultiblockAbility.PARALLEL_HATCH).setMaxGlobalLimited(1).setPreviewCount(1))
+                        .or(abilities(GCYMMultiblockAbility.PARALLEL_HATCH)
+                                .setMaxGlobalLimited(1)
+                                .setPreviewCount(1))
                         .or(maintenancePredicate))
                 .where('X', casingPredicate
                         .or(metaTileEntities(MultiblockAbility.REGISTRY.get(MultiblockAbility.EXPORT_FLUIDS).stream()
                                 .filter(mte -> !(mte instanceof MetaTileEntityMultiFluidHatch))
                                 .toArray(MetaTileEntity[]::new))
-                                        .setMinLayerLimited(1).setMaxLayerLimited(1)))
+                                .setMinLayerLimited(1)
+                                .setMaxLayerLimited(1)))
                 .where('Z', casingPredicate)
-                .where('P', states(getCasingState2()))
+                .where('P', states(getBoilerCasingState()))
                 .where('C', abilities(MultiblockAbility.MUFFLER_HATCH))
-                .where('T', tieredCasing().or(states(getCasingState2())))
-                .where('A', air())
+                .where('T', tieredCasing()
+                        .or(states(getBoilerCasingState())))
+                .where(' ', air())
                 .where('#', any())
                 .build();
     }
@@ -91,7 +99,7 @@ public class MetaTileEntityLargeDistillery extends GCYMRecipeMapMultiblockContro
         return GCYMMetaBlocks.LARGE_MULTIBLOCK_CASING.getState(BlockLargeMultiblockCasing.CasingType.WATERTIGHT_CASING);
     }
 
-    private static IBlockState getCasingState2() {
+    private static IBlockState getBoilerCasingState() {
         return MetaBlocks.BOILER_CASING.getState(BlockBoilerCasing.BoilerCasingType.STEEL_PIPE);
     }
 
@@ -114,8 +122,9 @@ public class MetaTileEntityLargeDistillery extends GCYMRecipeMapMultiblockContro
         }
     }
 
+    @Nonnull
     @Override
-    protected @NotNull OrientedOverlayRenderer getFrontOverlay() {
+    protected OrientedOverlayRenderer getFrontOverlay() {
         return GCYMTextures.LARGE_DISTILLERY_OVERLAY;
     }
 
@@ -127,5 +136,12 @@ public class MetaTileEntityLargeDistillery extends GCYMRecipeMapMultiblockContro
     @Override
     public boolean isTiered() {
         return false;
+    }
+
+    @Override
+    public String[] getDescription() {
+        List<String> list = new ArrayList<>();
+        list.add(I18n.format("gcym.machine.large_distillery.description"));
+        return list.toArray(new String[0]);
     }
 }

@@ -1,9 +1,8 @@
 package gregicality.multiblocks.common.metatileentities.multiblock.standard;
 
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.client.resources.I18n;
 import net.minecraft.util.ResourceLocation;
-
-import org.jetbrains.annotations.NotNull;
 
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.interfaces.IGregTechTileEntity;
@@ -24,6 +23,10 @@ import gregicality.multiblocks.api.unification.GCYMMaterials;
 import gregicality.multiblocks.common.block.GCYMMetaBlocks;
 import gregicality.multiblocks.common.block.blocks.BlockLargeMultiblockCasing;
 
+import javax.annotation.Nonnull;
+import java.util.ArrayList;
+import java.util.List;
+
 public class MetaTileEntityLargeMixer extends GCYMRecipeMapMultiblockController {
 
     public MetaTileEntityLargeMixer(ResourceLocation metaTileEntityId) {
@@ -31,25 +34,29 @@ public class MetaTileEntityLargeMixer extends GCYMRecipeMapMultiblockController 
     }
 
     @Override
-    public MetaTileEntity createMetaTileEntity(IGregTechTileEntity metaTileEntityHolder) {
+    public MetaTileEntity createMetaTileEntity(IGregTechTileEntity tileEntity) {
         return new MetaTileEntityLargeMixer(this.metaTileEntityId);
     }
 
+    @Nonnull
     @Override
-    protected @NotNull BlockPattern createStructurePattern() {
+    protected BlockPattern createStructurePattern() {
         return FactoryBlockPattern.start()
                 .aisle("#XXX#", "#XXX#", "#XXX#", "#XXX#", "#XXX#", "##F##")
-                .aisle("XXXXX", "XACAX", "XAAAX", "XACAX", "XAAAX", "##F##")
-                .aisle("XXXXX", "XCPCX", "XAPAX", "XCPCX", "XAPAX", "FFTFF")
-                .aisle("XXXXX", "XACAX", "XAAAX", "XACAX", "XAAAX", "##F##")
+                .aisle("XXXXX", "X C X", "X   X", "X C X", "X   X", "##F##")
+                .aisle("XXXXX", "XCPCX", "X P X", "XCPCX", "X P X", "FFTFF")
+                .aisle("XXXXX", "X C X", "X   X", "X C X", "X   X", "##F##")
                 .aisle("#XXX#", "#XSX#", "#XXX#", "#XXX#", "#XXX#", "##F##")
-                .where('S', selfPredicate())
-                .where('X', states(getCasingState()).setMinGlobalLimited(50).or(autoAbilities()))
-                .where('P', states(getCasingState2()))
-                .where('C', states(getCasingState3()))
-                .where('T', tieredCasing().or(states(getCasingState4())))
-                .where('F', frames(GCYMMaterials.HastelloyX))
-                .where('A', air())
+                .where('S', this.selfPredicate())
+                .where('X', states(getCasingState())
+                        .setMinGlobalLimited(50)
+                        .or(autoAbilities()))
+                .where('P', states(getBoilerCasingState()))
+                .where('C', states(getSecondCasingState()))
+                .where('T', tieredCasing()
+                        .or(states(getThirdCasingState())))
+                .where('F', states(getFrameState()))
+                .where(' ', air())
                 .where('#', any())
                 .build();
     }
@@ -58,16 +65,20 @@ public class MetaTileEntityLargeMixer extends GCYMRecipeMapMultiblockController 
         return GCYMMetaBlocks.LARGE_MULTIBLOCK_CASING.getState(BlockLargeMultiblockCasing.CasingType.MIXER_CASING);
     }
 
-    private static IBlockState getCasingState2() {
+    private static IBlockState getBoilerCasingState() {
         return MetaBlocks.BOILER_CASING.getState(BlockBoilerCasing.BoilerCasingType.POLYTETRAFLUOROETHYLENE_PIPE);
     }
 
-    private static IBlockState getCasingState3() {
+    private static IBlockState getSecondCasingState() {
         return MetaBlocks.METAL_CASING.getState(BlockMetalCasing.MetalCasingType.PTFE_INERT_CASING);
     }
 
-    private static IBlockState getCasingState4() {
+    private static IBlockState getThirdCasingState() {
         return MetaBlocks.TURBINE_CASING.getState(BlockTurbineCasing.TurbineCasingType.STAINLESS_STEEL_GEARBOX);
+    }
+
+    private static IBlockState getFrameState() {
+        return MetaBlocks.FRAMES.get(GCYMMaterials.HastelloyX).getBlock(GCYMMaterials.HastelloyX);
     }
 
     @Override
@@ -75,9 +86,17 @@ public class MetaTileEntityLargeMixer extends GCYMRecipeMapMultiblockController 
         return GCYMTextures.MIXER_CASING;
     }
 
+    @Nonnull
     @Override
-    protected @NotNull OrientedOverlayRenderer getFrontOverlay() {
+    protected OrientedOverlayRenderer getFrontOverlay() {
         return GCYMTextures.LARGE_MIXER_OVERLAY;
+    }
+
+    @Override
+    public String[] getDescription() {
+        List<String> list = new ArrayList<>();
+        list.add(I18n.format("gcym.machine.large_mixer.description"));
+        return list.toArray(new String[0]);
     }
 
     @Override

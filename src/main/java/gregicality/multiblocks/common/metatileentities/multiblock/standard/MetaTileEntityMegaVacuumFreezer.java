@@ -1,9 +1,8 @@
 package gregicality.multiblocks.common.metatileentities.multiblock.standard;
 
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.client.resources.I18n;
 import net.minecraft.util.ResourceLocation;
-
-import org.jetbrains.annotations.NotNull;
 
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.interfaces.IGregTechTileEntity;
@@ -24,6 +23,10 @@ import gregicality.multiblocks.api.render.GCYMTextures;
 import gregicality.multiblocks.common.block.GCYMMetaBlocks;
 import gregicality.multiblocks.common.block.blocks.BlockUniqueCasing;
 
+import javax.annotation.Nonnull;
+import java.util.ArrayList;
+import java.util.List;
+
 public class MetaTileEntityMegaVacuumFreezer extends GCYMRecipeMapMultiblockController {
 
     public MetaTileEntityMegaVacuumFreezer(ResourceLocation metaTileEntityId) {
@@ -31,33 +34,30 @@ public class MetaTileEntityMegaVacuumFreezer extends GCYMRecipeMapMultiblockCont
     }
 
     @Override
-    public MetaTileEntity createMetaTileEntity(IGregTechTileEntity metaTileEntityHolder) {
+    public MetaTileEntity createMetaTileEntity(IGregTechTileEntity tileEntity) {
         return new MetaTileEntityMegaVacuumFreezer(this.metaTileEntityId);
     }
 
+    @Nonnull
     @Override
-    protected @NotNull BlockPattern createStructurePattern() {
+    protected BlockPattern createStructurePattern() {
         return FactoryBlockPattern.start()
-                .aisle("XXXXXXX#KKK", "XXXXXXX#KVK", "XXXXXXX#KVK", "XXXXXXX#KVK", "XXXXXXX#KKK", "XXXXXXX####",
-                        "XXXXXXX####")
-                .aisle("XXXXXXX#KVK", "XPPPPPPPPPV", "XPAPAPX#VPV", "XPPPPPPPPPV", "XPAPAPX#KVK", "XPPPPPX####",
-                        "XXXXXXX####")
-                .aisle("XXXXXXX#KVK", "XPAPAPX#VPV", "XAAAAAX#VPV", "XPAAAPX#VPV", "XAAAAAX#KVK", "XPAPAPX####",
-                        "XXXXXXX####")
-                .aisle("XXXXXXX#KVK", "XPAPAPPPPPV", "XAAAAAX#VPV", "XPAAAPPPPPV", "XAAAAAX#KVK", "XPAPAPX####",
-                        "XXXXXXX####")
-                .aisle("XXXXXXX#KKK", "XPPPPPX#KVK", "XPAAAPX#KVK", "XPAAAPX#KVK", "XPAAAPX#KKK", "XPPPPPX####",
-                        "XXXXXXX####")
-                .aisle("#XXXXX#####", "#XXSXX#####", "#XGGGX#####", "#XGGGX#####", "#XGGGX#####", "#XXXXX#####",
-                        "###########")
+                .aisle("XXXXXXX KKK", "XXXXXXX KVK", "XXXXXXX KVK", "XXXXXXX KVK", "XXXXXXX KKK", "XXXXXXX    ", "XXXXXXX    ")
+                .aisle("XXXXXXX KVK", "XPPPPPPPPPV", "XPAPAPX VPV", "XPPPPPPPPPV", "XPAPAPX KVK", "XPPPPPX    ", "XXXXXXX    ")
+                .aisle("XXXXXXX KVK", "XPAPAPX VPV", "XAAAAAX VPV", "XPAAAPX VPV", "XAAAAAX KVK", "XPAPAPX    ", "XXXXXXX    ")
+                .aisle("XXXXXXX KVK", "XPAPAPPPPPV", "XAAAAAX VPV", "XPAAAPPPPPV", "XAAAAAX KVK", "XPAPAPX    ", "XXXXXXX    ")
+                .aisle("XXXXXXX KKK", "XPPPPPX KVK", "XPAAAPX KVK", "XPAAAPX KVK", "XPAAAPX KKK", "XPPPPPX    ", "XXXXXXX    ")
+                .aisle(" XXXXX     ", " XXSXX     ", " XGGGX     ", " XGGGX     ", " XGGGX     ", " XXXXX     ", "           ")
                 .where('S', selfPredicate())
-                .where('X', states(getCasingState()).setMinGlobalLimited(140).or(autoAbilities()))
-                .where('G', states(getCasingState2()))
-                .where('K', states(getCasingState3()))
-                .where('V', states(getCasingState4()))
-                .where('P', states(getCasingState5()))
+                .where('X', states(getCasingState())
+                        .setMinGlobalLimited(140)
+                        .or(autoAbilities()))
+                .where('G', states(getGlassState()))
+                .where('K', states(getSecondCasingState()))
+                .where('V', states(getUniqueCasingState()))
+                .where('P', states(getBoilerCasingState()))
                 .where('A', air())
-                .where('#', any())
+                .where(' ', any())
                 .build();
     }
 
@@ -65,19 +65,19 @@ public class MetaTileEntityMegaVacuumFreezer extends GCYMRecipeMapMultiblockCont
         return MetaBlocks.METAL_CASING.getState(BlockMetalCasing.MetalCasingType.ALUMINIUM_FROSTPROOF);
     }
 
-    private static IBlockState getCasingState2() {
+    private static IBlockState getGlassState() {
         return MetaBlocks.TRANSPARENT_CASING.getState(BlockGlassCasing.CasingType.TEMPERED_GLASS);
     }
 
-    private static IBlockState getCasingState3() {
+    private static IBlockState getSecondCasingState() {
         return MetaBlocks.METAL_CASING.getState(BlockMetalCasing.MetalCasingType.STAINLESS_CLEAN);
     }
 
-    private static IBlockState getCasingState4() {
+    private static IBlockState getUniqueCasingState() {
         return GCYMMetaBlocks.UNIQUE_CASING.getState(BlockUniqueCasing.UniqueCasingType.HEAT_VENT);
     }
 
-    private static IBlockState getCasingState5() {
+    private static IBlockState getBoilerCasingState() {
         return MetaBlocks.BOILER_CASING.getState(BlockBoilerCasing.BoilerCasingType.TUNGSTENSTEEL_PIPE);
     }
 
@@ -86,8 +86,16 @@ public class MetaTileEntityMegaVacuumFreezer extends GCYMRecipeMapMultiblockCont
         return Textures.FROST_PROOF_CASING;
     }
 
+    @Nonnull
     @Override
-    protected @NotNull OrientedOverlayRenderer getFrontOverlay() {
+    protected OrientedOverlayRenderer getFrontOverlay() {
         return GCYMTextures.MEGA_VACUUM_FREEZER_OVERLAY;
+    }
+
+    @Override
+    public String[] getDescription() {
+        List<String> list = new ArrayList<>();
+        list.add(I18n.format("gcym.machine.mega_vacuum_freezer.description"));
+        return list.toArray(new String[0]);
     }
 }

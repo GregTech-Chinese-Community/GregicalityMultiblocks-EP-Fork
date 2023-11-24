@@ -103,6 +103,10 @@ gcym.machine.steam_engine.description=§l比单方块蒸汽轮机更好§r\n蒸�
 gcym.machine.steam_engine.tooltip.1=最高产生%s§7级的能量。
 gcym.machine.large_circuit_assembler.name=大型电路组装机
 gcym.machine.large_circuit_assembler.description=§l电路组装厂§r\n电路组装机的多方块结构
+gcym.machine.large_mass_fabricator.name=大型质量发生器
+gcym.machine.large_mass_fabricator.description=§l分子重组§r\n质量发生器的多方块结构
+gcym.machine.large_large_replicator.name=大型复制机
+gcym.machine.large_large_replicator.description=§l并不是3D打印机§r\n复制机的多方块结构
 
 gcym.tooltip.parallel_enabled=可以通过§b并行控制仓§7并行处理。
 gcym.tooltip.tiered_hatch_enabled=需要§b控制单元§7以运行。

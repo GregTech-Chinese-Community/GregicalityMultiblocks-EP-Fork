@@ -2,6 +2,7 @@ package gregicality.multiblocks.common.metatileentities.multiblock.standard;
 
 import static gregtech.api.recipes.logic.OverclockingLogic.heatingCoilOverclockingLogic;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import net.minecraft.block.state.IBlockState;
@@ -48,6 +49,8 @@ import gregicality.multiblocks.common.block.GCYMMetaBlocks;
 import gregicality.multiblocks.common.block.blocks.BlockLargeMultiblockCasing;
 import gregicality.multiblocks.common.block.blocks.BlockUniqueCasing;
 
+import javax.annotation.Nonnull;
+
 public class MetaTileEntityMegaBlastFurnace extends GCYMRecipeMapMultiblockController implements IHeatingCoil {
 
     private int blastFurnaceTemperature;
@@ -58,7 +61,7 @@ public class MetaTileEntityMegaBlastFurnace extends GCYMRecipeMapMultiblockContr
     }
 
     @Override
-    public MetaTileEntity createMetaTileEntity(IGregTechTileEntity metaTileEntityHolder) {
+    public MetaTileEntity createMetaTileEntity(IGregTechTileEntity tileEntity) {
         return new MetaTileEntityMegaBlastFurnace(this.metaTileEntityId);
     }
 
@@ -93,79 +96,41 @@ public class MetaTileEntityMegaBlastFurnace extends GCYMRecipeMapMultiblockContr
     }
 
     @Override
-    public boolean checkRecipe(@NotNull Recipe recipe, boolean consumeIfSuccess) {
+    public boolean checkRecipe(@Nonnull Recipe recipe, boolean consumeIfSuccess) {
         return this.blastFurnaceTemperature >= recipe.getProperty(TemperatureProperty.getInstance(), 0);
     }
 
+    @Nonnull
     @Override
-    protected @NotNull BlockPattern createStructurePattern() {
+    protected BlockPattern createStructurePattern() {
         TraceabilityPredicate casing = states(getCasingState()).setMinGlobalLimited(360);
         return FactoryBlockPattern.start()
-                .aisle("##XXXXXXXXX##", "##XXXXXXXXX##", "#############", "#############", "#############",
-                        "#############", "#############", "#############", "#############", "#############",
-                        "#############", "#############", "#############", "#############", "#############",
-                        "#############", "#############")
-                .aisle("#XXXXXXXXXXX#", "#XXXXXXXXXXX#", "###F#####F###", "###F#####F###", "###FFFFFFF###",
-                        "#############", "#############", "#############", "#############", "#############",
-                        "####FFFFF####", "#############", "#############", "#############", "#############",
-                        "#############", "#############")
-                .aisle("XXXXXXXXXXXXX", "XXXXVVVVVXXXX", "##F#######F##", "##F#######F##", "##FFFHHHFFF##",
-                        "##F#######F##", "##F#######F##", "##F#######F##", "##F#######F##", "##F#######F##",
-                        "##FFFHHHFFF##", "#############", "#############", "#############", "#############",
-                        "#############", "###TTTTTTT###")
-                .aisle("XXXXXXXXXXXXX", "XXXXXXXXXXXXX", "#F####P####F#", "#F####P####F#", "#FFHHHPHHHFF#",
-                        "######P######", "######P######", "######P######", "######P######", "######P######",
-                        "##FHHHPHHHF##", "######P######", "######P######", "######P######", "######P######",
-                        "######P######", "##TTTTPTTTT##")
-                .aisle("XXXXXXXXXXXXX", "XXVXXXXXXXVXX", "####BBPBB####", "####TITIT####", "#FFHHHHHHHFF#",
-                        "####BITIB####", "####CCCCC####", "####CCCCC####", "####CCCCC####", "####BITIB####",
-                        "#FFHHHHHHHFF#", "####BITIB####", "####CCCCC####", "####CCCCC####", "####CCCCC####",
-                        "####BITIB####", "##TTTTPTTTT##")
-                .aisle("XXXXXXXXXXXXX", "XXVXXXXXXXVXX", "####BAAAB####", "####IAAAI####", "#FHHHAAAHHHF#",
-                        "####IAAAI####", "####CAAAC####", "####CAAAC####", "####CAAAC####", "####IAAAI####",
-                        "#FHHHAAAHHHF#", "####IAAAI####", "####CAAAC####", "####CAAAC####", "####CAAAC####",
-                        "####IAAAI####", "##TTTTPTTTT##")
-                .aisle("XXXXXXXXXXXXX", "XXVXXXXXXXVXX", "###PPAAAPP###", "###PTAAATP###", "#FHPHAAAHPHF#",
-                        "###PTAAATP###", "###PCAAACP###", "###PCAAACP###", "###PCAAACP###", "###PTAAATP###",
-                        "#FHPHAAAHPHF#", "###PTAAATP###", "###PCAAACP###", "###PCAAACP###", "###PCAAACP###",
-                        "###PTAAATP###", "##TPPPMPPPT##")
-                .aisle("XXXXXXXXXXXXX", "XXVXXXXXXXVXX", "####BAAAB####", "####IAAAI####", "#FHHHAAAHHHF#",
-                        "####IAAAI####", "####CAAAC####", "####CAAAC####", "####CAAAC####", "####IAAAI####",
-                        "#FHHHAAAHHHF#", "####IAAAI####", "####CAAAC####", "####CAAAC####", "####CAAAC####",
-                        "####IAAAI####", "##TTTTPTTTT##")
-                .aisle("XXXXXXXXXXXXX", "XXVXXXXXXXVXX", "####BBPBB####", "####TITIT####", "#FFHHHHHHHFF#",
-                        "####BITIB####", "####CCCCC####", "####CCCCC####", "####CCCCC####", "####BITIB####",
-                        "#FFHHHHHHHFF#", "####BITIB####", "####CCCCC####", "####CCCCC####", "####CCCCC####",
-                        "####BITIB####", "##TTTTPTTTT##")
-                .aisle("XXXXXXXXXXXXX", "XXXXXXXXXXXXX", "#F####P####F#", "#F####P####F#", "#FFHHHPHHHFF#",
-                        "######P######", "######P######", "######P######", "######P######", "######P######",
-                        "##FHHHPHHHF##", "######P######", "######P######", "######P######", "######P######",
-                        "######P######", "##TTTTPTTTT##")
-                .aisle("XXXXXXXXXXXXX", "XXXXVVVVVXXXX", "##F#######F##", "##F#######F##", "##FFFHHHFFF##",
-                        "##F#######F##", "##F#######F##", "##F#######F##", "##F#######F##", "##F#######F##",
-                        "##FFFHHHFFF##", "#############", "#############", "#############", "#############",
-                        "#############", "###TTTTTTT###")
-                .aisle("#XXXXXXXXXXX#", "#XXXXXXXXXXX#", "###F#####F###", "###F#####F###", "###FFFFFFF###",
-                        "#############", "#############", "#############", "#############", "#############",
-                        "####FFFFF####", "#############", "#############", "#############", "#############",
-                        "#############", "#############")
-                .aisle("##XXXXXXXXX##", "##XXXXSXXXX##", "#############", "#############", "#############",
-                        "#############", "#############", "#############", "#############", "#############",
-                        "#############", "#############", "#############", "#############", "#############",
-                        "#############", "#############")
+                .aisle("  XXXXXXXXX  ", "  XXXXXXXXX  ", "             ", "             ", "             ", "             ", "             ", "             ", "             ", "             ", "             ", "             ", "             ", "             ", "             ", "             ", "             ")
+                .aisle(" XXXXXXXXXXX ", " XXXXXXXXXXX ", "   F     F   ", "   F     F   ", "   FFFFFFF   ", "             ", "             ", "             ", "             ", "             ", "    FFFFF    ", "             ", "             ", "             ", "             ", "             ", "             ")
+                .aisle("XXXXXXXXXXXXX", "XXXXVVVVVXXXX", "  F       F  ", "  F       F  ", "  FFFHHHFFF  ", "  F       F  ", "  F       F  ", "  F       F  ", "  F       F  ", "  F       F  ", "  FFFHHHFFF  ", "             ", "             ", "             ", "             ", "             ", "   TTTTTTT   ")
+                .aisle("XXXXXXXXXXXXX", "XXXXXXXXXXXXX", " F    P    F ", " F    P    F ", " FFHHHPHHHFF ", "      P      ", "      P      ", "      P      ", "      P      ", "      P      ", "  FHHHPHHHF  ", "      P      ", "      P      ", "      P      ", "      P      ", "      P      ", "  TTTTPTTTT  ")
+                .aisle("XXXXXXXXXXXXX", "XXVXXXXXXXVXX", "    BBPBB    ", "    TITIT    ", " FFHHHHHHHFF ", "    BITIB    ", "    CCCCC    ", "    CCCCC    ", "    CCCCC    ", "    BITIB    ", " FFHHHHHHHFF ", "    BITIB    ", "    CCCCC    ", "    CCCCC    ", "    CCCCC    ", "    BITIB    ", "  TTTTPTTTT  ")
+                .aisle("XXXXXXXXXXXXX", "XXVXXXXXXXVXX", "    BAAAB    ", "    IAAAI    ", " FHHHAAAHHHF ", "    IAAAI    ", "    CAAAC    ", "    CAAAC    ", "    CAAAC    ", "    IAAAI    ", " FHHHAAAHHHF ", "    IAAAI    ", "    CAAAC    ", "    CAAAC    ", "    CAAAC    ", "    IAAAI    ", "  TTTTPTTTT  ")
+                .aisle("XXXXXXXXXXXXX", "XXVXXXXXXXVXX", "   PPAAAPP   ", "   PTAAATP   ", " FHPHAAAHPHF ", "   PTAAATP   ", "   PCAAACP   ", "   PCAAACP   ", "   PCAAACP   ", "   PTAAATP   ", " FHPHAAAHPHF ", "   PTAAATP   ", "   PCAAACP   ", "   PCAAACP   ", "   PCAAACP   ", "   PTAAATP   ", "  TPPPMPPPT  ")
+                .aisle("XXXXXXXXXXXXX", "XXVXXXXXXXVXX", "    BAAAB    ", "    IAAAI    ", " FHHHAAAHHHF ", "    IAAAI    ", "    CAAAC    ", "    CAAAC    ", "    CAAAC    ", "    IAAAI    ", " FHHHAAAHHHF ", "    IAAAI    ", "    CAAAC    ", "    CAAAC    ", "    CAAAC    ", "    IAAAI    ", "  TTTTPTTTT  ")
+                .aisle("XXXXXXXXXXXXX", "XXVXXXXXXXVXX", "    BBPBB    ", "    TITIT    ", " FFHHHHHHHFF ", "    BITIB    ", "    CCCCC    ", "    CCCCC    ", "    CCCCC    ", "    BITIB    ", " FFHHHHHHHFF ", "    BITIB    ", "    CCCCC    ", "    CCCCC    ", "    CCCCC    ", "    BITIB    ", "  TTTTPTTTT  ")
+                .aisle("XXXXXXXXXXXXX", "XXXXXXXXXXXXX", " F    P    F ", " F    P    F ", " FFHHHPHHHFF ", "      P      ", "      P      ", "      P      ", "      P      ", "      P      ", "  FHHHPHHHF  ", "      P      ", "      P      ", "      P      ", "      P      ", "      P      ", "  TTTTPTTTT  ")
+                .aisle("XXXXXXXXXXXXX", "XXXXVVVVVXXXX", "  F       F  ", "  F       F  ", "  FFFHHHFFF  ", "  F       F  ", "  F       F  ", "  F       F  ", "  F       F  ", "  F       F  ", "  FFFHHHFFF  ", "             ", "             ", "             ", "             ", "             ", "   TTTTTTT   ")
+                .aisle(" XXXXXXXXXXX ", " XXXXXXXXXXX ", "   F     F   ", "   F     F   ", "   FFFFFFF   ", "             ", "             ", "             ", "             ", "             ", "    FFFFF    ", "             ", "             ", "             ", "             ", "             ", "             ")
+                .aisle("  XXXXXXXXX  ", "  XXXXSXXXX  ", "             ", "             ", "             ", "             ", "             ", "             ", "             ", "             ", "             ", "             ", "             ", "             ", "             ", "             ", "             ")
                 .where('S', selfPredicate())
                 .where('X', casing.or(autoAbilities(true, true, true, true, true, true, false)))
-                .where('F', frames(Materials.NaquadahAlloy))
+                .where('F', states(getFrameState()))
                 .where('H', casing)
-                .where('P', states(getPipeState()))
+                .where('P', states(getBoilerCasingState()))
                 .where('B', states(getFireboxState()))
                 .where('I', states(getIntakeState()))
-                .where('T', states(getCasingState2()))
-                .where('V', states(getVentState()))
+                .where('T', states(getSecondCasingState()))
+                .where('V', states(getUniqueCasingState()))
                 .where('M', abilities(MultiblockAbility.MUFFLER_HATCH))
                 .where('C', heatingCoils())
                 .where('A', air())
-                .where('#', any())
+                .where(' ', any())
                 .build();
     }
 
@@ -174,7 +139,7 @@ public class MetaTileEntityMegaBlastFurnace extends GCYMRecipeMapMultiblockContr
                 .getState(BlockLargeMultiblockCasing.CasingType.HIGH_TEMPERATURE_CASING);
     }
 
-    private static IBlockState getCasingState2() {
+    private static IBlockState getSecondCasingState() {
         return MetaBlocks.METAL_CASING.getState(BlockMetalCasing.MetalCasingType.TUNGSTENSTEEL_ROBUST);
     }
 
@@ -187,12 +152,16 @@ public class MetaTileEntityMegaBlastFurnace extends GCYMRecipeMapMultiblockContr
                 .getState(BlockMultiblockCasing.MultiblockCasingType.EXTREME_ENGINE_INTAKE_CASING);
     }
 
-    private static IBlockState getPipeState() {
+    private static IBlockState getBoilerCasingState() {
         return MetaBlocks.BOILER_CASING.getState(BlockBoilerCasing.BoilerCasingType.TUNGSTENSTEEL_PIPE);
     }
 
-    private static IBlockState getVentState() {
+    private static IBlockState getUniqueCasingState() {
         return GCYMMetaBlocks.UNIQUE_CASING.getState(BlockUniqueCasing.UniqueCasingType.HEAT_VENT);
+    }
+    
+    private static IBlockState getFrameState() {
+        return MetaBlocks.FRAMES.get(Materials.NaquadahAlloy).getBlock(Materials.NaquadahAlloy);
     }
 
     @Override
@@ -205,12 +174,12 @@ public class MetaTileEntityMegaBlastFurnace extends GCYMRecipeMapMultiblockContr
 
     @Override
     public ICubeRenderer getBaseTexture(IMultiblockPart iMultiblockPart) {
-        return iMultiblockPart instanceof IMufflerHatch ? Textures.ROBUST_TUNGSTENSTEEL_CASING :
-                GCYMTextures.BLAST_CASING;
+        return iMultiblockPart instanceof IMufflerHatch ? Textures.ROBUST_TUNGSTENSTEEL_CASING : GCYMTextures.BLAST_CASING;
     }
 
+    @Nonnull
     @Override
-    protected @NotNull OrientedOverlayRenderer getFrontOverlay() {
+    protected OrientedOverlayRenderer getFrontOverlay() {
         return GCYMTextures.MEGA_BLAST_FURNACE_OVERLAY;
     }
 
@@ -237,14 +206,15 @@ public class MetaTileEntityMegaBlastFurnace extends GCYMRecipeMapMultiblockContr
         }
 
         @Override
-        protected int @NotNull [] runOverclockingLogic(@NotNull IRecipePropertyStorage propertyStorage, int recipeEUt,
-                                                       long maxVoltage, int duration, int maxOverclocks) {
-            return heatingCoilOverclockingLogic(Math.abs(recipeEUt),
-                    maxVoltage,
-                    duration,
-                    maxOverclocks,
-                    ((IHeatingCoil) metaTileEntity).getCurrentTemperature(),
-                    propertyStorage.getRecipePropertyValue(TemperatureProperty.getInstance(), 0));
+        protected int @NotNull [] runOverclockingLogic(@NotNull IRecipePropertyStorage propertyStorage, int recipeEUt, long maxVoltage, int duration, int maxOverclocks) {
+            return heatingCoilOverclockingLogic(Math.abs(recipeEUt), maxVoltage, duration, maxOverclocks, ((IHeatingCoil) metaTileEntity).getCurrentTemperature(), propertyStorage.getRecipePropertyValue(TemperatureProperty.getInstance(), 0));
         }
+    }
+
+    @Override
+    public String[] getDescription() {
+        List<String> list = new ArrayList<>();
+        list.add(I18n.format("gcym.machine.mega_blast_furnace.description"));
+        return list.toArray(new String[0]);
     }
 }

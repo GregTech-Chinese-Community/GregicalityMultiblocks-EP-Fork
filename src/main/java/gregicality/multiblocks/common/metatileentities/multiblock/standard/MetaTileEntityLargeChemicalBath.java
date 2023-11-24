@@ -3,9 +3,8 @@ package gregicality.multiblocks.common.metatileentities.multiblock.standard;
 import static gregtech.api.util.RelativeDirection.*;
 
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.client.resources.I18n;
 import net.minecraft.util.ResourceLocation;
-
-import org.jetbrains.annotations.NotNull;
 
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.interfaces.IGregTechTileEntity;
@@ -24,32 +23,39 @@ import gregicality.multiblocks.api.render.GCYMTextures;
 import gregicality.multiblocks.common.block.GCYMMetaBlocks;
 import gregicality.multiblocks.common.block.blocks.BlockLargeMultiblockCasing;
 
-public class MetaTileEntityLargeChemicalBath extends GCYMRecipeMapMultiblockController { // todo render liquid in the
-                                                                                         // structure that looks the
-                                                                                         // same as what is in the fluid
-                                                                                         // hatches
+import javax.annotation.Nonnull;
+import java.util.ArrayList;
+import java.util.List;
+
+//  TODO Water Liquid in structure like Fishing Pond in EPcore
+public class MetaTileEntityLargeChemicalBath extends GCYMRecipeMapMultiblockController {
 
     public MetaTileEntityLargeChemicalBath(ResourceLocation metaTileEntityId) {
-        super(metaTileEntityId, new RecipeMap[] { RecipeMaps.CHEMICAL_BATH_RECIPES, RecipeMaps.ORE_WASHER_RECIPES });
+        super(metaTileEntityId, new RecipeMap[] {
+                RecipeMaps.CHEMICAL_BATH_RECIPES,
+                RecipeMaps.ORE_WASHER_RECIPES });
     }
 
     @Override
-    public MetaTileEntity createMetaTileEntity(IGregTechTileEntity metaTileEntityHolder) {
+    public MetaTileEntity createMetaTileEntity(IGregTechTileEntity tileEntity) {
         return new MetaTileEntityLargeChemicalBath(this.metaTileEntityId);
     }
 
+    @Nonnull
     @Override
-    protected @NotNull BlockPattern createStructurePattern() {
+    protected BlockPattern createStructurePattern() {
         return FactoryBlockPattern.start(RIGHT, FRONT, UP)
                 .aisle("XXXXX", "XXXXX", "XXXXX", "XXXXX", "XXXXX", "XXXXX", "XXXXX")
-                .aisle("XXSXX", "XCTCX", "XAAAX", "XAAAX", "XAAAX", "XCCCX", "XXXXX")
-                .aisle("XXXXX", "XAAAX", "XAAAX", "XAAAX", "XAAAX", "XAAAX", "XXXXX")
-                .where('S', selfPredicate())
-                .where('X', states(getCasingState()).setMinGlobalLimited(55).or(autoAbilities()))
-                .where('C', states(getCasingState2()))
-                .where('T', tieredCasing().or(states(getCasingState2())))
-                .where('A', air())
-                .where('#', any())
+                .aisle("XXSXX", "XCTCX", "X   X", "X   X", "X   X", "XCCCX", "XXXXX")
+                .aisle("XXXXX", "X   X", "X   X", "X   X", "X   X", "X   X", "XXXXX")
+                .where('S', this.selfPredicate())
+                .where('X', states(getCasingState())
+                        .setMinGlobalLimited(55)
+                        .or(autoAbilities()))
+                .where('C', states(getBoilerCasingState()))
+                .where('T', tieredCasing()
+                        .or(states(getBoilerCasingState())))
+                .where(' ', air())
                 .build();
     }
 
@@ -57,7 +63,7 @@ public class MetaTileEntityLargeChemicalBath extends GCYMRecipeMapMultiblockCont
         return GCYMMetaBlocks.LARGE_MULTIBLOCK_CASING.getState(BlockLargeMultiblockCasing.CasingType.WATERTIGHT_CASING);
     }
 
-    private static IBlockState getCasingState2() {
+    private static IBlockState getBoilerCasingState() {
         return MetaBlocks.BOILER_CASING.getState(BlockBoilerCasing.BoilerCasingType.TITANIUM_PIPE);
     }
 
@@ -66,9 +72,17 @@ public class MetaTileEntityLargeChemicalBath extends GCYMRecipeMapMultiblockCont
         return GCYMTextures.WATERTIGHT_CASING;
     }
 
+    @Nonnull
     @Override
-    protected @NotNull OrientedOverlayRenderer getFrontOverlay() {
+    protected OrientedOverlayRenderer getFrontOverlay() {
         return GCYMTextures.LARGE_CHEMICAL_BATH_OVERLAY;
+    }
+
+    @Override
+    public String[] getDescription() {
+        List<String> list = new ArrayList<>();
+        list.add(I18n.format("gcym.machine.large_chemical_bath.description"));
+        return list.toArray(new String[0]);
     }
 
     @Override

@@ -3,9 +3,8 @@ package gregicality.multiblocks.common.metatileentities.multiblock.standard;
 import static gregtech.api.util.RelativeDirection.*;
 
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.client.resources.I18n;
 import net.minecraft.util.ResourceLocation;
-
-import org.jetbrains.annotations.NotNull;
 
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.interfaces.IGregTechTileEntity;
@@ -25,6 +24,10 @@ import gregicality.multiblocks.api.render.GCYMTextures;
 import gregicality.multiblocks.common.block.GCYMMetaBlocks;
 import gregicality.multiblocks.common.block.blocks.BlockLargeMultiblockCasing;
 
+import javax.annotation.Nonnull;
+import java.util.ArrayList;
+import java.util.List;
+
 public class MetaTileEntityLargeCircuitAssembler extends GCYMRecipeMapMultiblockController {
 
     public MetaTileEntityLargeCircuitAssembler(ResourceLocation metaTileEntityId) {
@@ -32,24 +35,28 @@ public class MetaTileEntityLargeCircuitAssembler extends GCYMRecipeMapMultiblock
     }
 
     @Override
-    public MetaTileEntity createMetaTileEntity(IGregTechTileEntity metaTileEntityHolder) {
+    public MetaTileEntity createMetaTileEntity(IGregTechTileEntity tileEntity) {
         return new MetaTileEntityLargeCircuitAssembler(this.metaTileEntityId);
     }
 
+    @Nonnull
     @Override
-    protected @NotNull BlockPattern createStructurePattern() {
+    protected BlockPattern createStructurePattern() {
         return FactoryBlockPattern.start(FRONT, UP, RIGHT)
                 .aisle("#XXXX", "#XXXX", "#XXXX")
-                .aisle("#XXXX", "#CAPX", "#XGGX").setRepeatable(4)
+                .aisle("#XXXX", "#C PX", "#XGGX").setRepeatable(4)
                 .aisle("XXXXX", "STPPX", "XXGGX")
                 .aisle("XXXXX", "XXXXX", "XXXXX")
-                .where('S', selfPredicate())
-                .where('X', states(getCasingState()).setMinGlobalLimited(55).or(autoAbilities()))
-                .where('C', states(getCasingState2()))
-                .where('P', states(getCasingState3()))
-                .where('G', states(getCasingState4()))
-                .where('T', tieredCasing().or(states(getCasingState())))
-                .where('A', air())
+                .where('S', this.selfPredicate())
+                .where('X', states(getCasingState())
+                        .setMinGlobalLimited(55)
+                        .or(autoAbilities()))
+                .where('C', states(getGlassState()))
+                .where('P', states(getBoilerCasingState()))
+                .where('G', states(getSecondCasingState()))
+                .where('T', tieredCasing()
+                        .or(states(getCasingState())))
+                .where(' ', air())
                 .where('#', any())
                 .build();
     }
@@ -58,15 +65,15 @@ public class MetaTileEntityLargeCircuitAssembler extends GCYMRecipeMapMultiblock
         return GCYMMetaBlocks.LARGE_MULTIBLOCK_CASING.getState(BlockLargeMultiblockCasing.CasingType.ASSEMBLING_CASING);
     }
 
-    private static IBlockState getCasingState2() {
+    private static IBlockState getGlassState() {
         return MetaBlocks.TRANSPARENT_CASING.getState(BlockGlassCasing.CasingType.TEMPERED_GLASS);
     }
 
-    private static IBlockState getCasingState3() {
+    private static IBlockState getBoilerCasingState() {
         return MetaBlocks.BOILER_CASING.getState(BlockBoilerCasing.BoilerCasingType.TUNGSTENSTEEL_PIPE);
     }
 
-    private static IBlockState getCasingState4() {
+    private static IBlockState getSecondCasingState() {
         return MetaBlocks.MULTIBLOCK_CASING.getState(BlockMultiblockCasing.MultiblockCasingType.GRATE_CASING);
     }
 
@@ -80,8 +87,16 @@ public class MetaTileEntityLargeCircuitAssembler extends GCYMRecipeMapMultiblock
         return GCYMTextures.ASSEMBLING_CASING;
     }
 
+    @Nonnull
     @Override
-    protected @NotNull OrientedOverlayRenderer getFrontOverlay() {
+    protected OrientedOverlayRenderer getFrontOverlay() {
         return GCYMTextures.LARGE_CIRCUIT_ASSEMBLER_OVERLAY;
+    }
+
+    @Override
+    public String[] getDescription() {
+        List<String> list = new ArrayList<>();
+        list.add(I18n.format("gcym.machine.large_circuit_assembler.description"));
+        return list.toArray(new String[0]);
     }
 }

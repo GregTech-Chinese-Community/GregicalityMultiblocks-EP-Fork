@@ -1,9 +1,8 @@
 package gregicality.multiblocks.common.metatileentities.multiblock.standard;
 
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.client.resources.I18n;
 import net.minecraft.util.ResourceLocation;
-
-import org.jetbrains.annotations.NotNull;
 
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.interfaces.IGregTechTileEntity;
@@ -22,6 +21,10 @@ import gregicality.multiblocks.api.render.GCYMTextures;
 import gregicality.multiblocks.common.block.GCYMMetaBlocks;
 import gregicality.multiblocks.common.block.blocks.BlockLargeMultiblockCasing;
 
+import javax.annotation.Nonnull;
+import java.util.ArrayList;
+import java.util.List;
+
 public class MetaTileEntityLargeExtruder extends GCYMRecipeMapMultiblockController {
 
     public MetaTileEntityLargeExtruder(ResourceLocation metaTileEntityId) {
@@ -29,24 +32,28 @@ public class MetaTileEntityLargeExtruder extends GCYMRecipeMapMultiblockControll
     }
 
     @Override
-    public MetaTileEntity createMetaTileEntity(IGregTechTileEntity metaTileEntityHolder) {
+    public MetaTileEntity createMetaTileEntity(IGregTechTileEntity tileEntity) {
         return new MetaTileEntityLargeExtruder(this.metaTileEntityId);
     }
 
+    @Nonnull
     @Override
-    protected @NotNull BlockPattern createStructurePattern() {
+    protected BlockPattern createStructurePattern() {
         return FactoryBlockPattern.start()
-                .aisle("##XXX", "##XXX", "##XXX")
-                .aisle("##XXX", "##XPX", "##XGX").setRepeatable(2)
+                .aisle("  XXX", "  XXX", "  XXX")
+                .aisle("  XXX", "  XPX", "  XGX").setRepeatable(2)
                 .aisle("XXXXX", "XXXPX", "XXXGX")
                 .aisle("XXXXX", "XTXPX", "XXXGX")
                 .aisle("XXXXX", "XSXXX", "XXXXX")
-                .where('S', selfPredicate())
-                .where('X', states(getCasingState()).setMinGlobalLimited(40).or(autoAbilities()))
-                .where('P', states(getCasingState2()))
-                .where('G', states(getCasingState3()))
-                .where('T', tieredCasing().or(air()))
-                .where('#', any())
+                .where('S', this.selfPredicate())
+                .where('X', states(getCasingState())
+                        .setMinGlobalLimited(40)
+                        .or(autoAbilities()))
+                .where('P', states(getBoilerCasingState()))
+                .where('G', states(getGlassState()))
+                .where('T', tieredCasing()
+                        .or(air()))
+                .where(' ', any())
                 .build();
     }
 
@@ -55,11 +62,11 @@ public class MetaTileEntityLargeExtruder extends GCYMRecipeMapMultiblockControll
                 .getState(BlockLargeMultiblockCasing.CasingType.STRESS_PROOF_CASING);
     }
 
-    private static IBlockState getCasingState2() {
+    private static IBlockState getBoilerCasingState() {
         return MetaBlocks.BOILER_CASING.getState(BlockBoilerCasing.BoilerCasingType.TITANIUM_PIPE);
     }
 
-    private static IBlockState getCasingState3() {
+    private static IBlockState getGlassState() {
         return MetaBlocks.TRANSPARENT_CASING.getState(BlockGlassCasing.CasingType.TEMPERED_GLASS);
     }
 
@@ -68,9 +75,17 @@ public class MetaTileEntityLargeExtruder extends GCYMRecipeMapMultiblockControll
         return GCYMTextures.STRESS_PROOF_CASING;
     }
 
+    @Nonnull
     @Override
-    protected @NotNull OrientedOverlayRenderer getFrontOverlay() {
+    protected OrientedOverlayRenderer getFrontOverlay() {
         return GCYMTextures.LARGE_EXTRUDER_OVERLAY;
+    }
+
+    @Override
+    public String[] getDescription() {
+        List<String> list = new ArrayList<>();
+        list.add(I18n.format("gcym.machine.large_extruder.description"));
+        return list.toArray(new String[0]);
     }
 
     @Override
