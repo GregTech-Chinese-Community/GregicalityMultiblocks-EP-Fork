@@ -1,6 +1,7 @@
 package gregicality.multiblocks.loaders.recipe;
 
 import static gregicality.multiblocks.api.unification.GCYMMaterials.*;
+import static gregicality.multiblocks.common.metatileentities.GCYMMetaTileEntities.PARALLEL_HATCH;
 import static gregtech.api.GTValues.*;
 import static gregtech.api.unification.material.Materials.*;
 import static gregtech.api.unification.ore.OrePrefix.*;
@@ -283,46 +284,21 @@ public final class GCYMMetaTileEntityLoader {
                 'S', MetaTileEntities.CIRCUIT_ASSEMBLER[LuV].getStackForm(),
                 'W', new UnificationEntry(cableGtSingle, NiobiumTitanium));
 
-        // Parallel Hatches
-        ModHandler.addShapedRecipe(true, "parallel_hatch_iv", GCYMMetaTileEntities.PARALLEL_HATCH[0].getStackForm(),
+        //  Parallel Hatches
+        MetaTileEntityLoader.registerMachineRecipe(ArrayUtils.subarray(PARALLEL_HATCH, 0, UIV),
                 "SCE", "CHC", "WCW",
-                'C', new UnificationEntry(circuit, MarkerMaterials.Tier.LuV),
-                'H', MetaTileEntities.HULL[IV].getStackForm(),
-                'S', MetaItems.SENSOR_IV.getStackForm(),
-                'E', MetaItems.EMITTER_IV.getStackForm(),
-                'W', new UnificationEntry(cableGtDouble, Platinum));
+                'C', CraftingComponent.BETTER_CIRCUIT,
+                'H', CraftingComponent.HULL,
+                'S', CraftingComponent.SENSOR,
+                'E', CraftingComponent.EMITTER,
+                'W', CraftingComponent.CABLE_QUAD);
 
-        ModHandler.addShapedRecipe(true, "parallel_hatch_luv",
-                GCYMMetaTileEntities.PARALLEL_HATCH[LuV - IV].getStackForm(),
-                "SCE", "CHC", "WCW",
-                'C', new UnificationEntry(circuit, MarkerMaterials.Tier.ZPM),
-                'H', MetaTileEntities.HULL[LuV].getStackForm(),
-                'S', MetaItems.SENSOR_LuV.getStackForm(),
-                'E', MetaItems.EMITTER_LuV.getStackForm(),
-                'W', new UnificationEntry(cableGtDouble, NiobiumTitanium));
 
-        ModHandler.addShapedRecipe(true, "parallel_hatch_zpm",
-                GCYMMetaTileEntities.PARALLEL_HATCH[ZPM - IV].getStackForm(),
-                "SCE", "CHC", "WCW",
-                'C', new UnificationEntry(circuit, MarkerMaterials.Tier.UV),
-                'H', MetaTileEntities.HULL[ZPM].getStackForm(),
-                'S', MetaItems.SENSOR_ZPM.getStackForm(),
-                'E', MetaItems.EMITTER_ZPM.getStackForm(),
-                'W', new UnificationEntry(cableGtDouble, VanadiumGallium));
-
-        ModHandler.addShapedRecipe(true, "parallel_hatch_uv",
-                GCYMMetaTileEntities.PARALLEL_HATCH[UV - IV].getStackForm(),
-                "SCE", "CHC", "WCW",
-                'C', new UnificationEntry(circuit, MarkerMaterials.Tier.UHV),
-                'H', MetaTileEntities.HULL[UV].getStackForm(),
-                'S', MetaItems.SENSOR_UV.getStackForm(),
-                'E', MetaItems.EMITTER_UV.getStackForm(),
-                'W', new UnificationEntry(cableGtDouble, YttriumBariumCuprate));
-
-        // Tiered Hatches
-        MetaTileEntityLoader.registerMachineRecipe(
-                ArrayUtils.subarray(GCYMMetaTileEntities.TIERED_HATCH, 0, GregTechAPI.isHighTier() ? UHV : UV), "PPP",
-                "PCP", "PPP", 'P', CraftingComponent.PLATE, 'C', CraftingComponent.BETTER_CIRCUIT);
+        //  Tiered Hatches
+        MetaTileEntityLoader.registerMachineRecipe(ArrayUtils.subarray(GCYMMetaTileEntities.TIERED_HATCH, 0, GregTechAPI.isHighTier() ? UHV : UV),
+                "PPP", "PCP", "PPP",
+                'P', CraftingComponent.PLATE,
+                'C', CraftingComponent.BETTER_CIRCUIT);
 
         if (!GregTechAPI.isHighTier()) {
             ModHandler.addShapedRecipe(true, "gcym.machine.tiered_hatch.uhv",

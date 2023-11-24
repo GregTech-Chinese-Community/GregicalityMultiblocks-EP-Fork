@@ -48,7 +48,7 @@ public class MetaTileEntityParallelHatch extends MetaTileEntityMultiblockPart
 
     public MetaTileEntityParallelHatch(ResourceLocation metaTileEntityId, int tier) {
         super(metaTileEntityId, tier);
-        this.maxParallel = (int) Math.pow(4, tier - GTValues.EV);
+        this.maxParallel = (int) Math.pow(4, tier - GTValues.HV);
         this.currentParallel = this.maxParallel;
     }
 
@@ -121,8 +121,7 @@ public class MetaTileEntityParallelHatch extends MetaTileEntityMultiblockPart
     }
 
     @Override
-    public void addInformation(ItemStack stack, @Nullable World player, @NotNull List<String> tooltip,
-                               boolean advanced) {
+    public void addInformation(ItemStack stack, @Nullable World player, @NotNull List<String> tooltip, boolean advanced) {
         super.addInformation(stack, player, tooltip, advanced);
         tooltip.add(I18n.format("gcym.machine.parallel_hatch.tooltip", this.maxParallel));
         tooltip.add(I18n.format("gregtech.universal.disabled"));
@@ -142,15 +141,7 @@ public class MetaTileEntityParallelHatch extends MetaTileEntityMultiblockPart
     public void renderMetaTileEntity(CCRenderState renderState, Matrix4 translation, IVertexOperation[] pipeline) {
         super.renderMetaTileEntity(renderState, translation, pipeline);
         if (shouldRenderOverlay()) {
-            OrientedOverlayRenderer overlayRenderer;
-            if (getTier() == GTValues.IV)
-                overlayRenderer = GCYMTextures.PARALLEL_HATCH_MK1_OVERLAY;
-            else if (getTier() == GTValues.LuV)
-                overlayRenderer = GCYMTextures.PARALLEL_HATCH_MK2_OVERLAY;
-            else if (getTier() == GTValues.ZPM)
-                overlayRenderer = GCYMTextures.PARALLEL_HATCH_MK3_OVERLAY;
-            else
-                overlayRenderer = GCYMTextures.PARALLEL_HATCH_MK4_OVERLAY;
+            OrientedOverlayRenderer overlayRenderer = getOrientedOverlayRenderer();
 
             if (getController() != null && getController() instanceof RecipeMapMultiblockController) {
                 overlayRenderer.renderOrientedState(renderState, translation, pipeline, getFrontFacing(),
@@ -161,6 +152,25 @@ public class MetaTileEntityParallelHatch extends MetaTileEntityMultiblockPart
                 overlayRenderer.renderOrientedState(renderState, translation, pipeline, getFrontFacing(), false, false);
             }
         }
+    }
+
+    private OrientedOverlayRenderer getOrientedOverlayRenderer() {
+        OrientedOverlayRenderer overlayRenderer;
+        if (getTier() == GTValues.EV)
+            overlayRenderer = GCYMTextures.PARALLEL_HATCH_MK1_OVERLAY;
+        else if (getTier() == GTValues.IV)
+            overlayRenderer = GCYMTextures.PARALLEL_HATCH_MK1_OVERLAY;
+        else if (getTier() == GTValues.LuV)
+            overlayRenderer = GCYMTextures.PARALLEL_HATCH_MK2_OVERLAY;
+        else if (getTier() == GTValues.ZPM)
+            overlayRenderer = GCYMTextures.PARALLEL_HATCH_MK2_OVERLAY;
+        else if (getTier() == GTValues.UV)
+            overlayRenderer = GCYMTextures.PARALLEL_HATCH_MK3_OVERLAY;
+        else if (getTier() == GTValues.UHV)
+            overlayRenderer = GCYMTextures.PARALLEL_HATCH_MK3_OVERLAY;
+        else
+            overlayRenderer = GCYMTextures.PARALLEL_HATCH_MK4_OVERLAY;
+        return overlayRenderer;
     }
 
     @Override
