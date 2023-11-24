@@ -31,6 +31,7 @@ public final class GCYMMetaTileEntityLoader {
     private GCYMMetaTileEntityLoader() {}
 
     public static void init() {
+
         ModHandler.addShapedRecipe(true, "large_macerator", GCYMMetaTileEntities.LARGE_MACERATOR.getStackForm(),
                 "TCT", "PSP", "MWM",
                 'T', new UnificationEntry(plate, TungstenCarbide),
@@ -293,7 +294,6 @@ public final class GCYMMetaTileEntityLoader {
                 'E', CraftingComponent.EMITTER,
                 'W', CraftingComponent.CABLE_QUAD);
 
-
         //  Tiered Hatches
         MetaTileEntityLoader.registerMachineRecipe(ArrayUtils.subarray(GCYMMetaTileEntities.TIERED_HATCH, 0, GregTechAPI.isHighTier() ? UHV : UV),
                 "PPP", "PCP", "PPP",
@@ -301,8 +301,7 @@ public final class GCYMMetaTileEntityLoader {
                 'C', CraftingComponent.BETTER_CIRCUIT);
 
         if (!GregTechAPI.isHighTier()) {
-            ModHandler.addShapedRecipe(true, "gcym.machine.tiered_hatch.uhv",
-                    GCYMMetaTileEntities.TIERED_HATCH[UHV].getStackForm(),
+            ModHandler.addShapedRecipe(true, "gcym.machine.tiered_hatch.uhv", GCYMMetaTileEntities.TIERED_HATCH[UHV].getStackForm(),
                     "PPP", "PCP", "PPP",
                     'P', CraftingComponent.PLATE.getIngredient(UHV),
                     'C', CraftingComponent.CIRCUIT.getIngredient(UHV));
