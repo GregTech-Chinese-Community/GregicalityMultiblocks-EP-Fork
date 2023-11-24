@@ -1,111 +1,7 @@
-# Chinese translate by iijunxz.	
-# 中文翻译由 iijunxz 翻译。	
-# Corresponding Version: 1.1.16
-# 对应版本: 1.1.6
+#  Ore Prefixes
+gcym.fluid.molten=熔融%s
 
-# multiblocks
-gcym.machine.large_macerator.name=大型研磨机
-gcym.machine.alloy_blast_smelter.name=合金冶炼炉
-gcym.machine.large_arc_furnace.name=大型电弧炉
-gcym.machine.large_assembler.name=大型组装机
-gcym.machine.large_autoclave.name=大型高压釜
-gcym.machine.large_bender.name=大型辊压机
-gcym.machine.large_brewer.name=大型酿造机
-gcym.machine.large_centrifuge.name=大型离心机
-gcym.machine.large_chemical_bath.name=大型化学浸洗机
-gcym.machine.chemical_plant.name=化工厂
-gcym.machine.chemical_plant.tooltip.1=只能同时进行大型化学反应
-gcym.machine.large_extractor.name=大型提取机
-gcym.machine.large_cutter.name=大型切割机
-gcym.machine.large_distillery.name=大型蒸馏机
-gcym.machine.large_electrolyzer.name=大型电解机
-gcym.machine.large_polarizer.name=大型电磁铁
-gcym.machine.large_extruder.name=大型压模机
-gcym.machine.large_solidifier.name=大型流体固化机
-gcym.machine.large_mixer.name=大型搅拌机
-gcym.machine.large_packager.name=大型打包机
-gcym.machine.large_engraver.name=大型精密激光蚀刻机
-gcym.machine.large_sifter.name=大型筛选器
-gcym.machine.large_wiremill.name=大型线材轧机
-gcym.machine.electric_implosion_compressor.name=电力聚爆压缩机
-gcym.machine.large_mass_fabricator.name=大型物质生成机
-gcym.machine.large_replicator.name=大型复制机
-gcym.machine.mega_blast_furnace.name=转底炉
-gcym.machine.mega_vacuum_freezer.name=批量真空冷冻机
-gcym.machine.steam_engine.name=工业蒸汽轮机
-gcym.machine.steam_engine.tooltip.1=最高产生%s§7级的能量。
-gcym.machine.large_circuit_assembler.name=大型电路组装机
-
-
-gcym.tooltip.parallel_enabled=可以通过§b并行控制仓§7并行处理。
-gcym.tooltip.tiered_hatch_enabled=需要§b控制单元§7以运行。
-gcym.multiblock.tiered_hatch.tooltip=最大电压: §a%s (%s§r)
-
-
-
-# multiblock descriptions
-gcym.multiblock.large_macerator.description=用于研磨的多方块研磨机
-gcym.multiblock.alloy_blast_smelter.description=用于大量制造合金的高炉
-gcym.multiblock.large_arc_furnace.description=用于回收的多方块电弧炉
-gcym.multiblock.large_assembler.description=用于组装物品的多方块组装机
-gcym.multiblock.large_autoclave.description=用于给物品加压的多方块高压釜
-gcym.multiblock.large_bender.description=用于成型材料的多方块卷板机、压缩机、冲压机床、锻造锤
-gcym.multiblock.large_brewer.description=用于酿造的多方块酿造室、发酵槽
-gcym.multiblock.large_centrifuge.description=用于分离材料的多方块离心机、热力离心机
-gcym.multiblock.large_chemical_bath.description=用于清洗材料的多方块化学浸洗机、洗矿厂
-gcym.multiblock.chemical_plant.description=用于高级化工生产的化工厂
-gcym.multiblock.large_extractor.description=用于转移材料的多方块提取机、装罐机
-gcym.multiblock.large_cutter.description=用于切割物体的多方块板材切割机、车床
-gcym.multiblock.large_distillery.description=用于分离流体的多方块蒸馏塔、蒸馏室
-gcym.multiblock.large_electrolyzer.description=用于分割分子的多方块电解机
-gcym.multiblock.large_polarizer.description=用于磁化材料的多方块两极磁化机、电磁选矿机
-gcym.multiblock.large_extruder.description=用于成型材料的多方块压模机
-gcym.multiblock.large_solidifier.description=用于固化材料的多方块流体固化机
-gcym.multiblock.large_mixer.description=用于混合材料的多方块搅拌机
-gcym.multiblock.large_packager.description=用于打包物品的多方块打包机
-gcym.multiblock.large_engraver.description=用于蚀刻物体的多方块精密激光蚀刻机
-gcym.multiblock.large_sifter.description=用于筛选材料的多方块筛选器
-gcym.multiblock.large_wiremill.description=用于生产导线的多方块线材轧机
-gcym.multiblock.electric_implosion_compressor.description=用于极端压缩的电力版聚爆压缩机
-gcym.multiblock.large_mass_fabricator.description=用于将物质转化为基本粒子的多方块物质生成机
-gcym.multiblock.large_replicator.description=用于将基本粒子转化为材料的多方块复制机
-gcym.multiblock.mega_blast_furnace.description=用于大量冶炼的大型电力高炉
-gcym.multiblock.mega_vacuum_freezer.description=用于大量冷却的大型真空冷冻机
-gcym.multiblock.steam_engine.description=用于高效发电的大型蒸汽涡轮
-gcym.multiblock.large_circuit_assembler.description=用于制造电路的多方块电路组装机
-
-
-# hatches
-
-gcym.machine.parallel_hatch.iv.name=并行控制仓(IV)
-gcym.machine.parallel_hatch.luv.name=并行控制仓(LuV)
-gcym.machine.parallel_hatch.zpm.name=并行控制仓(ZPM)
-gcym.machine.parallel_hatch.uv.name=并行控制仓(UV)
-gcym.machine.parallel_hatch.tooltip=最多可同时处理§b%s§7个配方。
-gcym.machine.parallel_hatch.display=调整多方块的最多可同时处理数。
-
-gcym.machine.tiered_hatch.tooltip.1=最高允许%s§7的电压.
-
-gcym.machine.tiered_hatch.ulv.name=控制单元(ULV)
-gcym.machine.tiered_hatch.lv.name=控制单元(IV)
-gcym.machine.tiered_hatch.mv.name=控制单元(MV)
-gcym.machine.tiered_hatch.hv.name=控制单元(HV)
-gcym.machine.tiered_hatch.ev.name=控制单元(EV)
-gcym.machine.tiered_hatch.iv.name=控制单元(IV)
-gcym.machine.tiered_hatch.luv.name=控制单元(LuV)
-gcym.machine.tiered_hatch.zpm.name=控制单元(ZPM)
-gcym.machine.tiered_hatch.uv.name=控制单元(UV)
-gcym.machine.tiered_hatch.uhv.name=控制单元(UHV)
-gcym.machine.tiered_hatch.uev.name=控制单元(UEV)
-gcym.machine.tiered_hatch.uiv.name=控制单元(UIV)
-gcym.machine.tiered_hatch.umv.name=控制单元(UMV)
-gcym.machine.tiered_hatch.uxv.name=控制单元(UXV)
-gcym.machine.tiered_hatch.max.name=控制单元(MaX)
-
-
-# casings
-
-# unique casing
+#  Casings
 tile.unique_casing.crushing_wheels.name=粉碎轮
 tile.unique_casing.slicing_blades.name=切片刀
 tile.unique_casing.electrolytic_cell.name=电解器
@@ -113,41 +9,122 @@ tile.unique_casing.heat_vent.name=散热片
 tile.unique_casing.molybdenum_disilicide_coil.name=二硅化钼线圈方块
 
 # large multiblock casing
-tile.large_multiblock_casing.macerator_casing.name=安全研磨机械方块
-tile.large_multiblock_casing.blast_casing.name=高温冶炼机械方块
-tile.large_multiblock_casing.assembler_casing.name=大型组装机机械方块
-tile.large_multiblock_casing.stress_proof_casing.name=耐压机械方块
-tile.large_multiblock_casing.corrosion_proof_casing.name=耐腐蚀机械方块
-tile.large_multiblock_casing.vibration_safe_casing.name=防震机械方块
-tile.large_multiblock_casing.watertight_casing.name=防水机械方块
-tile.large_multiblock_casing.cutter_casing.name=防震切割机械方块
-tile.large_multiblock_casing.nonconducting_casing.name=绝缘机械方块
-tile.large_multiblock_casing.mixer_casing.name=惰性搅拌机械方块
-tile.large_multiblock_casing.engraver_casing.name=抗激光蚀刻机械方块
-tile.large_multiblock_casing.atomic_casing.name=原子机械方块
-tile.large_multiblock_casing.steam_casing.name=工业蒸汽机械方块
+tile.large_multiblock_casing.macerator_casing.name=塞龙-100安全研磨机器外壳
+tile.large_multiblock_casing.blast_casing.name=耐高温HSLA钢机器外壳
+tile.large_multiblock_casing.assembler_casing.name=司太立100精密组装机器外壳
+tile.large_multiblock_casing.stress_proof_casing.name=耐压马氏体时效钢300机器外壳
+tile.large_multiblock_casing.corrosion_proof_casing.name=耐腐蚀钴黄铜机器外壳
+tile.large_multiblock_casing.vibration_safe_casing.name=防震耐热铬铁合金-MA956机器外壳
+tile.large_multiblock_casing.watertight_casing.name=耐腐蚀防水钢机器外壳
+tile.large_multiblock_casing.cutter_casing.name=防震哈斯特洛伊合金-C276机器外壳
+tile.large_multiblock_casing.nonconducting_casing.name=绝缘HSLA钢机器外壳
+tile.large_multiblock_casing.mixer_casing.name=惰性哈斯特洛伊-X机器外壳
+tile.large_multiblock_casing.engraver_casing.name=抗激光碳化钛钨机器外壳
+tile.large_multiblock_casing.atomic_casing.name=原子级碳化凯金硅岩合金机器外壳
+tile.large_multiblock_casing.steam_casing.name=耐高温黄铜机器外壳
 
-# RecipeMaps
+#  Hatches
+gcym.machine.parallel_hatch.iv.name=并行控制仓（IV）
+gcym.machine.parallel_hatch.luv.name=并行控制仓（LuV）
+gcym.machine.parallel_hatch.zpm.name=并行控制仓（ZPM）
+gcym.machine.parallel_hatch.uv.name=并行控制仓（UV）
+gcym.machine.parallel_hatch.tooltip=最多可同时处理§b%s§7个配方。
+gcym.machine.parallel_hatch.display=调整多方块的最多可同时处理数。
+
+gcym.machine.tiered_hatch.tooltip.1=最高允许%s§7的电压.
+
+gcym.machine.tiered_hatch.ulv.name=控制单元（ULV）
+gcym.machine.tiered_hatch.lv.name=控制单元（LV）
+gcym.machine.tiered_hatch.mv.name=控制单元（MV）
+gcym.machine.tiered_hatch.hv.name=控制单元（HV）
+gcym.machine.tiered_hatch.ev.name=控制单元（EV）
+gcym.machine.tiered_hatch.iv.name=控制单元（IV）
+gcym.machine.tiered_hatch.luv.name=控制单元（LuV）
+gcym.machine.tiered_hatch.zpm.name=控制单元（ZPM）
+gcym.machine.tiered_hatch.uv.name=控制单元（UV）
+gcym.machine.tiered_hatch.uhv.name=控制单元（UHV）
+gcym.machine.tiered_hatch.uev.name=控制单元（UEV）
+gcym.machine.tiered_hatch.uiv.name=控制单元（UIV）
+gcym.machine.tiered_hatch.uxv.name=控制单元（UXV）
+gcym.machine.tiered_hatch.opv.name=控制单元（OpV）
+gcym.machine.tiered_hatch.max.name=控制单元（MAX）
+
+#  Multiblocks
+gcym.machine.large_macerator.name=大型研磨机
+gcym.machine.large_macerator.description=§l超级研磨塔§r\n研磨机的多方块结构
+gcym.machine.alloy_blast_smelter.name=合金冶炼炉
+gcym.machine.alloy_blast_smelter.description=§l合金之乡§r\n一台特殊的合金炉，用于提供各式各样的复杂合金
+gcym.machine.large_arc_furnace.name=大型电弧炉
+gcym.machine.large_arc_furnace.description=§l回收再利用§r\n电弧炉的多方块结构
+gcym.machine.large_assembler.name=大型组装机
+gcym.machine.large_assembler.description=§l超级物品加工厂§r\n组装机的多方块结构
+gcym.machine.large_autoclave.name=大型高压釜
+gcym.machine.large_autoclave.description=§l千兆压强§r\n高压釜的多方块结构
+gcym.machine.large_bender.name=大型辊压机
+gcym.machine.large_bender.description=§l板材锤炼者§r\n卷板机，压缩机，冲压机床，锻造锤的多方块结构
+gcym.machine.large_brewer.name=大型酿造厂
+gcym.machine.large_brewer.description=§l酒庄必备§r\n酿造室，发酵槽的多方块结构
+gcym.machine.large_centrifuge.name=大型离心机
+gcym.machine.large_centrifuge.description=§l材料分离者§r\n离心机，热力离心机的多方块结构
+gcym.machine.large_chemical_bath.name=大型化学浸洗机
+gcym.machine.large_chemical_bath.description=§l并不能用于冲洗碗碟§r\n化学浸洗机，洗矿厂的多方块结构
+gcym.machine.large_extractor.name=大型提取机
+gcym.machine.large_extractor.description=§l橡胶树之敌§r\n提取机，装罐机的多方块结构
+gcym.machine.large_cutter.name=大型切割机
+gcym.machine.large_cutter.description=§l材料剖分者§r\n板材切割机，车床的多方块结构
+gcym.machine.large_distillery.name=大型蒸馏厂
+gcym.machine.large_distillery.description=§l现代化蒸馏§r\n蒸馏室，蒸馏塔的多方块结构
+gcym.machine.large_electrolyzer.name=大型电解机
+gcym.machine.large_electrolyzer.description=§l原子级分解§r\n电解机的多方块结构
+gcym.machine.large_polarizer.name=大型电磁铁
+gcym.machine.large_polarizer.description=§l磁铁厂§r\n两极磁化机，电磁选矿机的多方块结构
+gcym.machine.large_extruder.name=大型压模机
+gcym.machine.large_extruder.description=§l通用材料加工厂§r\n压模机的多方块结构
+gcym.machine.large_solidifier.name=大型流体固化机
+gcym.machine.large_solidifier.description=§l或许可以用来制作方糖§r\n流体固化机的多方块结构
+gcym.machine.large_mixer.name=大型搅拌机
+gcym.machine.large_mixer.description=§l材料融合机§r\n搅拌机的多方块结构
+gcym.machine.large_packager.name=大型打包机
+gcym.machine.large_packager.description=§l超级仓库管理员§r\n打包机的多方块结构
+gcym.machine.large_engraver.name=大型精密激光蚀刻机
+gcym.machine.large_engraver.description=§l电子束蚀刻§r\n精密激光蚀刻机的多方块结构
+gcym.machine.large_sifter.name=大型筛选器
+gcym.machine.large_sifter.description=§l巨型筛子§r\n筛选器的多方块结构
+gcym.machine.large_wiremill.name=大型线材轧机
+gcym.machine.large_wiremill.description=§l金属织机§r\n线材轧机的多方块结构
+gcym.machine.electric_implosion_compressor.name=电力聚爆压缩机
+gcym.machine.electric_implosion_compressor.description=§l爆炸！§r\n聚爆压缩机的升级
+gcym.machine.mega_blast_furnace.name=转底炉
+gcym.machine.mega_blast_furnace.description=§l巨型电力高炉§r\n电力高炉的升级
+gcym.machine.mega_vacuum_freezer.name=批量真空冷冻机
+gcym.machine.mega_vacuum_freezer.description=§l巨型真空冷冻机§r\n真空冷冻机的升级
+gcym.machine.steam_engine.name=工业蒸汽轮机
+gcym.machine.steam_engine.description=§l比单方块蒸汽轮机更好§r\n蒸汽轮机的多方块结构
+gcym.machine.steam_engine.tooltip.1=最高产生%s§7级的能量。
+gcym.machine.large_circuit_assembler.name=大型电路组装机
+gcym.machine.large_circuit_assembler.description=§l电路组装厂§r\n电路组装机的多方块结构
+
+gcym.tooltip.parallel_enabled=可以通过§b并行控制仓§7并行处理。
+gcym.tooltip.tiered_hatch_enabled=需要§b控制单元§7以运行。
+gcym.multiblock.tiered_hatch.tooltip=最大电压: §a%s (%s§r)
+
+#  Recipes
 recipemap.alloy_blast_smelter.name=合金高炉冶炼
 
-# Materials
-gcym.material.stellite_100=司太立100合金
-gcym.material.watertight_steel=防水钢
-gcym.material.maraging_steel_300=马氏体时效钢300
-gcym.material.hastelloy_c_276=哈斯特洛依合金-C276
-gcym.material.hastelloy_x=哈斯特洛依合金-X
-gcym.material.trinaquadalloy=碳化三元金属硅岩合金
-gcym.material.zeron_100=塞龙-100
-gcym.material.titanium_carbide=碳化钛
-gcym.material.tantalum_carbide=碳化钽
-gcym.material.molybdenum_disilicide=二硅化钼
+#  Materials
+gregtech.material.stellite_100.name=司太立100合金
+gregtech.material.watertight_steel.name=防水钢
+gregtech.material.maraging_steel_300=马氏体时效钢300
+gregtech.material.hastelloy_c_276=哈斯特洛依合金-C276
+gregtech.material.hastelloy_x=哈斯特洛依合金-X
+gregtech.material.trinaquadalloy=碳化凯金硅岩合金
+gregtech.material.zeron_100=塞龙-100
+gregtech.material.titanium_carbide=碳化钛
+gregtech.material.tantalum_carbide=碳化钽
+gregtech.material.molybdenum_disilicide=二硅化钼
+gregtech.material.hsla_steel=HSLA钢
+gregtech.material.titanium_tungsten_carbide=碳化钛钨
+gregtech.material.incoloy_ma_956=耐热铬铁合金-MA956
 
-gcym.material.hsla_steel=HSLA钢
-gcym.material.titanium_tungsten_carbide=碳化钛钨
-gcym.material.incoloy_ma_956=耐热铬铁合金-MA956
-
-# fluids
-gcym.fluid.molten=熔融%s
-
-# deprecation
+#  Debug
 gcym.deprecation.tooltip=§c这台机器已被弃用！它将在下一次更新中被删除！破坏控制器以返还材料！

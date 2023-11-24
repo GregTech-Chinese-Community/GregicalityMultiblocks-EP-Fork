@@ -4,9 +4,6 @@ import gregtech.api.unification.material.Material;
 
 public final class GCYMMaterials {
 
-    /*
-     * First Degree Materials 3000-3019
-     */
     public static Material Stellite100;
     public static Material WatertightSteel;
     public static Material MaragingSteel300;
@@ -17,31 +14,13 @@ public final class GCYMMaterials {
     public static Material TitaniumCarbide;
     public static Material TantalumCarbide;
     public static Material MolybdenumDisilicide;
-
-    /*
-     * Second Degree Materials 3020-3039
-     */
     public static Material HSLASteel;
     public static Material TitaniumTungstenCarbide;
     public static Material IncoloyMA956;
 
-    private GCYMMaterials() {}
-
-    /*
-     * High Degree Materials 3040-3059
-     */
-
-    /*
-     * Gregicality: 3000-19999
-     */
+    //  Range: 3000-3500
     public static void init() {
-        // First Degree 3000-3019
-        GCYMFirstDegreeMaterials.init();
-
-        // Second Degree 3020-3039
-        GCYMSecondDegreeMaterials.init();
-
-        // Flags
+        GCYMFirstDegreeMaterials.register();
         GCYMMaterialFlagAddition.init();
     }
 }
