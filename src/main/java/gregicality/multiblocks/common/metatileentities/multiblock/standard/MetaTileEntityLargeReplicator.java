@@ -87,7 +87,7 @@ public class MetaTileEntityLargeReplicator extends GCYMRecipeMapMultiblockContro
     @Override
     public String[] getDescription() {
         List<String> list = new ArrayList<>();
-        list.add(I18n.format("gcym.machine.large_large_replicator.description"));
+        list.add(I18n.format("gcym.machine.large_replicator.description"));
         return list.toArray(new String[0]);
     }
 }
