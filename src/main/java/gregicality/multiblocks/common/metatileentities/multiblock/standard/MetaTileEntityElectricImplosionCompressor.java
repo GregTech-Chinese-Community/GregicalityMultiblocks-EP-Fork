@@ -1,15 +1,14 @@
 package gregicality.multiblocks.common.metatileentities.multiblock.standard;
 
+import gregicality.multiblocks.api.metatileentity.GCYMRecipeMapMultiblockController;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.client.resources.I18n;
 import net.minecraft.util.ResourceLocation;
-
-import org.jetbrains.annotations.NotNull;
 
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.interfaces.IGregTechTileEntity;
 import gregtech.api.metatileentity.multiblock.IMultiblockPart;
 import gregtech.api.metatileentity.multiblock.MultiblockAbility;
-import gregtech.api.metatileentity.multiblock.RecipeMapMultiblockController;
 import gregtech.api.pattern.BlockPattern;
 import gregtech.api.pattern.FactoryBlockPattern;
 import gregtech.api.recipes.RecipeMaps;
@@ -24,32 +23,37 @@ import gregtech.common.blocks.MetaBlocks;
 
 import gregicality.multiblocks.api.render.GCYMTextures;
 
-public class MetaTileEntityElectricImplosionCompressor extends RecipeMapMultiblockController {
+import javax.annotation.Nonnull;
+import java.util.ArrayList;
+import java.util.List;
+
+public class MetaTileEntityElectricImplosionCompressor extends GCYMRecipeMapMultiblockController {
 
     public MetaTileEntityElectricImplosionCompressor(ResourceLocation metaTileEntityId) {
         super(metaTileEntityId, RecipeMaps.IMPLOSION_RECIPES);
     }
 
     @Override
-    public MetaTileEntity createMetaTileEntity(IGregTechTileEntity metaTileEntityHolder) {
+    public MetaTileEntity createMetaTileEntity(IGregTechTileEntity tileEntity) {
         return new MetaTileEntityElectricImplosionCompressor(this.metaTileEntityId);
     }
 
+    @Nonnull
     @Override
-    protected @NotNull BlockPattern createStructurePattern() {
+    protected BlockPattern createStructurePattern() {
         return FactoryBlockPattern.start()
                 .aisle("XXXXX", "F###F", "F###F", "F###F", "F###F", "XXXXX")
                 .aisle("XXXXX", "#PGP#", "#PGP#", "#PGP#", "#PGP#", "XXXXX")
                 .aisle("XXXXX", "#GAG#", "#GAG#", "#GAG#", "#GAG#", "XXMXX")
                 .aisle("XXXXX", "#PGP#", "#PGP#", "#PGP#", "#PGP#", "XXXXX")
                 .aisle("XXSXX", "F###F", "F###F", "F###F", "F###F", "XXXXX")
-                .where('S', selfPredicate())
-                .where('X',
-                        states(getCasingState()).setMinGlobalLimited(40)
-                                .or(autoAbilities(true, true, true, true, true, true, false)))
-                .where('P', states(getCasingState2()))
-                .where('G', states(getCasingState3()))
-                .where('F', frames(Materials.TungstenSteel))
+                .where('S', this.selfPredicate())
+                .where('X', states(getCasingState())
+                        .setMinGlobalLimited(40)
+                        .or(autoAbilities(true, true, true, true, true, true, false)))
+                .where('P', states(getBoilerCasingState()))
+                .where('G', states(getGlassState()))
+                .where('F', states(getFrameState()))
                 .where('A', air())
                 .where('#', any())
                 .where('M', abilities(MultiblockAbility.MUFFLER_HATCH))
@@ -60,12 +64,16 @@ public class MetaTileEntityElectricImplosionCompressor extends RecipeMapMultiblo
         return MetaBlocks.METAL_CASING.getState(BlockMetalCasing.MetalCasingType.TUNGSTENSTEEL_ROBUST);
     }
 
-    private static IBlockState getCasingState2() {
+    private static IBlockState getBoilerCasingState() {
         return MetaBlocks.BOILER_CASING.getState(BlockBoilerCasing.BoilerCasingType.TUNGSTENSTEEL_PIPE);
     }
 
-    private static IBlockState getCasingState3() {
+    private static IBlockState getGlassState() {
         return MetaBlocks.TRANSPARENT_CASING.getState(BlockGlassCasing.CasingType.TEMPERED_GLASS);
+    }
+
+    private static IBlockState getFrameState() {
+        return MetaBlocks.FRAMES.get(Materials.TungstenSteel).getBlock(Materials.TungstenSteel);
     }
 
     @Override
@@ -73,13 +81,21 @@ public class MetaTileEntityElectricImplosionCompressor extends RecipeMapMultiblo
         return Textures.ROBUST_TUNGSTENSTEEL_CASING;
     }
 
+    @Nonnull
     @Override
-    protected @NotNull OrientedOverlayRenderer getFrontOverlay() {
+    protected OrientedOverlayRenderer getFrontOverlay() {
         return GCYMTextures.ELECTRIC_IMPLOSION_OVERLAY;
     }
 
     @Override
     public boolean hasMufflerMechanics() {
         return true;
+    }
+
+    @Override
+    public String[] getDescription() {
+        List<String> list = new ArrayList<>();
+        list.add(I18n.format("gcym.machine.electric_implosion_compressor.description"));
+        return list.toArray(new String[0]);
     }
 }
