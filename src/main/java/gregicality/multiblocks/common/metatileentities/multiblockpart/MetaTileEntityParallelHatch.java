@@ -37,8 +37,7 @@ import codechicken.lib.render.CCRenderState;
 import codechicken.lib.render.pipeline.IVertexOperation;
 import codechicken.lib.vec.Matrix4;
 
-public class MetaTileEntityParallelHatch extends MetaTileEntityMultiblockPart
-                                         implements IMultiblockAbilityPart<IParallelHatch>, IParallelHatch {
+public class MetaTileEntityParallelHatch extends MetaTileEntityMultiblockPart implements IMultiblockAbilityPart<IParallelHatch>, IParallelHatch {
 
     private static final int MIN_PARALLEL = 1;
 
@@ -75,10 +74,9 @@ public class MetaTileEntityParallelHatch extends MetaTileEntityMultiblockPart
         parallelAmountGroup.addWidget(new IncrementButtonWidget(118, 36, 30, 20, 1, 4, 16, 64, this::setCurrentParallel)
                 .setDefaultTooltip()
                 .setShouldClientCallback(false));
-        parallelAmountGroup
-                .addWidget(new IncrementButtonWidget(29, 36, 30, 20, -1, -4, -16, -64, this::setCurrentParallel)
-                        .setDefaultTooltip()
-                        .setShouldClientCallback(false));
+        parallelAmountGroup.addWidget(new IncrementButtonWidget(29, 36, 30, 20, -1, -4, -16, -64, this::setCurrentParallel)
+                .setDefaultTooltip()
+                .setShouldClientCallback(false));
 
         parallelAmountGroup.addWidget(new TextFieldWidget2(63, 42, 51, 20, this::getParallelAmountToString, val -> {
             if (val != null && !val.isEmpty()) {
@@ -87,7 +85,7 @@ public class MetaTileEntityParallelHatch extends MetaTileEntityMultiblockPart
         })
                 .setCentered(true)
                 .setNumbersOnly(1, this.maxParallel)
-                .setMaxLength(3)
+                .setMaxLength(6)
                 .setValidator(getTextFieldValidator(() -> this.maxParallel)));
 
         return ModularUI.defaultBuilder()

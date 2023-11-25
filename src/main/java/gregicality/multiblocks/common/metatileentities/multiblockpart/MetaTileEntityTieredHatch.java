@@ -27,8 +27,7 @@ import codechicken.lib.render.CCRenderState;
 import codechicken.lib.render.pipeline.IVertexOperation;
 import codechicken.lib.vec.Matrix4;
 
-public class MetaTileEntityTieredHatch extends MetaTileEntityMultiblockPart
-                                       implements IMultiblockAbilityPart<ITieredMetaTileEntity> {
+public class MetaTileEntityTieredHatch extends MetaTileEntityMultiblockPart implements IMultiblockAbilityPart<ITieredMetaTileEntity> {
 
     public MetaTileEntityTieredHatch(ResourceLocation metaTileEntityId, int tier) {
         super(metaTileEntityId, tier);
@@ -52,13 +51,11 @@ public class MetaTileEntityTieredHatch extends MetaTileEntityMultiblockPart
     @Override
     public void renderMetaTileEntity(CCRenderState renderState, Matrix4 translation, IVertexOperation[] pipeline) {
         super.renderMetaTileEntity(renderState, translation, pipeline);
-        GCYMTextures.TIERED_HATCH_OVERLAY.renderOrientedState(renderState, translation, pipeline, getFrontFacing(),
-                false, false);
+        GCYMTextures.TIERED_HATCH_OVERLAY.renderOrientedState(renderState, translation, pipeline, getFrontFacing(), false, false);
     }
 
     @Override
-    public void addInformation(ItemStack stack, @Nullable World player, @NotNull List<String> tooltip,
-                               boolean advanced) {
+    public void addInformation(ItemStack stack, @Nullable World player, @NotNull List<String> tooltip, boolean advanced) {
         super.addInformation(stack, player, tooltip, advanced);
         tooltip.add(I18n.format("gcym.machine.tiered_hatch.tooltip.1", GTValues.VNF[getTier()]));
     }

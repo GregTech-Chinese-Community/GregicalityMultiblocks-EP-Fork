@@ -44,7 +44,7 @@ public class MetaTileEntityElectricImplosionCompressor extends GCYMRecipeMapMult
         return FactoryBlockPattern.start()
                 .aisle("XXXXX", "F###F", "F###F", "F###F", "F###F", "XXXXX")
                 .aisle("XXXXX", "#PGP#", "#PGP#", "#PGP#", "#PGP#", "XXXXX")
-                .aisle("XXXXX", "#GAG#", "#GAG#", "#GAG#", "#GAG#", "XXMXX")
+                .aisle("XXXXX", "#G G#", "#G G#", "#G G#", "#G G#", "XXMXX")
                 .aisle("XXXXX", "#PGP#", "#PGP#", "#PGP#", "#PGP#", "XXXXX")
                 .aisle("XXSXX", "F###F", "F###F", "F###F", "F###F", "XXXXX")
                 .where('S', this.selfPredicate())
@@ -54,7 +54,7 @@ public class MetaTileEntityElectricImplosionCompressor extends GCYMRecipeMapMult
                 .where('P', states(getBoilerCasingState()))
                 .where('G', states(getGlassState()))
                 .where('F', states(getFrameState()))
-                .where('A', air())
+                .where(' ', air())
                 .where('#', any())
                 .where('M', abilities(MultiblockAbility.MUFFLER_HATCH))
                 .build();
